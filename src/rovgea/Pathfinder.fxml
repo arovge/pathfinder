@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rovgea.PathfinderController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="303.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.0" minWidth="10.0" prefWidth="297.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="11.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="440.0" minHeight="10.0" prefHeight="429.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <MenuBar GridPane.columnSpan="2147483647">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#run" text="Run" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Map Options">
+               <items>
+                  <CheckMenuItem mnemonicParsing="false" onAction="#showSteps" text="Show Steps" />
+                  <CheckMenuItem mnemonicParsing="false" onAction="#enableDiagonal" text="Enable Diagonal Tiles" />
+               </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <HBox alignment="CENTER_LEFT" prefHeight="199.0" prefWidth="600.0" GridPane.rowIndex="2">
+            <children>
+                <Label fx:id="timeLabel" text="Time elapsed: 0 seconds" />
+            </children>
+            <GridPane.margin>
+                <Insets left="10.0" />
+            </GridPane.margin>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="199.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label fx:id="modeLabel" text="Mode: Map Creation" />
+         </children>
+        </HBox>
+    </children>
+</GridPane>
