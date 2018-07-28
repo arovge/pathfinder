@@ -42,19 +42,26 @@ public class PathfinderController {
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
-                Rectangle rectangle = new Rectangle(i * width, j * height, width, height);
-                rectangle.setFill(Paint.valueOf("#e0e0e0"));
+                MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height);
 
-                rectangle.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    rectangle.setFill(Paint.valueOf("#b8b7b7"));
+                mapRect.setFill(Paint.valueOf("#e0e0e0"));
+
+                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+                    mapRect.setFill(Paint.valueOf("#b8b7b7"));
                 });
 
-                rectangle.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    rectangle.setFill(Paint.valueOf("#e0e0e0"));
+                mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+                    if (!mapRect.isActive()) {
+                        mapRect.setFill(Paint.valueOf("#e0e0e0"));
+                    }
                 });
 
-                this.pane.getChildren().add(rectangle);
-                this.rectangles[i][j] = rectangle;
+                mapRect.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+                    mapRect.toggleActive();
+                });
+
+                this.pane.getChildren().add(mapRect);
+                this.rectangles[i][j] = mapRect;
             }
         }
     }
@@ -78,21 +85,5 @@ public class PathfinderController {
      */
     public void enableDiagonal() {
 
-    }
-
-    public void mouseEnter(MouseEvent e) {
-        Rectangle rect = (Rectangle) e.getSource();
-        System.out.println(e.getSource());
-        rect.setFill(Paint.valueOf("#b8b7b7"));
-    }
-
-    public void mouseExit(MouseEvent e) {
-        Rectangle rect = (Rectangle) e.getSource();
-        rect.setFill(Paint.valueOf("#e0e0e0"));
-    }
-
-    public void toggleSquare(MouseEvent e) {
-        Rectangle rect = (Rectangle) e.getSource();
-        rect.setFill(Paint.valueOf("#e0e0e0"));
     }
 }
