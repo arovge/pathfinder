@@ -8,6 +8,9 @@ package rovgea;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 
 /**
  * This is the controller for the Pathfinder JavaFX file.
@@ -42,5 +45,17 @@ public class PathfinderController {
      */
     public void enableDiagonal() {
 
+    }
+
+    public void mouseEnter(MouseEvent e) {
+        Rectangle rect = (Rectangle) e.getSource();
+        System.out.println(rect);
+        rect.setFill(Paint.valueOf("#b8b7b7"));
+    }
+
+    public void mouseExit(MouseEvent e) {
+        Rectangle rect = (Rectangle) e.getSource();
+        System.out.println(rect);
+        rect.setFill(Paint.valueOf("#e0e0e0"));
     }
 }
