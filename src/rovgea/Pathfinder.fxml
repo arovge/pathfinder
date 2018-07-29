@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rovgea.PathfinderController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rovgea.PathfinderController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="303.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.0" minWidth="10.0" prefWidth="297.0" />
@@ -23,7 +23,7 @@
         <RowConstraints maxHeight="328.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <MenuBar GridPane.columnSpan="2147483647">
+        <MenuBar prefHeight="54.0" prefWidth="600.0" GridPane.columnSpan="2147483647">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -40,17 +40,23 @@
         </MenuBar>
         <HBox alignment="CENTER_LEFT" prefHeight="199.0" prefWidth="600.0" GridPane.rowIndex="2">
             <children>
-                <Label fx:id="timeLabel" text="Time elapsed: 0 seconds" />
+                <Label fx:id="timeLabel" text="Time elapsed: 0 seconds">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
             </children>
             <GridPane.margin>
-                <Insets left="10.0" />
+                <Insets />
             </GridPane.margin>
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="199.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="modeLabel" text="Mode: Map Creation" />
+            <Label fx:id="modeLabel" text="Creation Mode">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin></Label>
          </children>
         </HBox>
-      <Pane fx:id="pane" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Pane fx:id="pane" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="450.0" prefWidth="600.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
     </children>
 </GridPane>

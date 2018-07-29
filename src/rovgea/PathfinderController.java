@@ -8,7 +8,6 @@ package rovgea;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -19,7 +18,7 @@ import javafx.scene.layout.Pane;
  */
 public class PathfinderController {
 
-    private final int x = 19;
+    private final int x = 20;
     private final int y = 15;
     private MapRectangle[][] rectangles = new MapRectangle[x][y];
 
@@ -39,8 +38,8 @@ public class PathfinderController {
 
     @FXML
     public void initialize() {
-        final double width = 31.0;
-        final double height = 31.0;
+        final double width = 30.0;
+        final double height = 30.0;
 
         // enable dragging functionality on the pane
         this.pane.setOnMouseDragged(e -> {
