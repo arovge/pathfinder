@@ -27,9 +27,15 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#run" text="Run" />
+                        <MenuItem fx:id="runMenuItem" disable="true" mnemonicParsing="false" onAction="#run" text="Run" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Algorithms">
+               <items>
+                  <CheckMenuItem mnemonicParsing="false" text="Bruteforce" />
+                  <CheckMenuItem mnemonicParsing="false" text="A*" />
+               </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="Map Options">
                <items>
                   <CheckMenuItem mnemonicParsing="false" onAction="#showSteps" text="Show Steps" />

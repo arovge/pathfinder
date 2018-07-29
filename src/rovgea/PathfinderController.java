@@ -8,6 +8,7 @@ package rovgea;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -18,6 +19,7 @@ import javafx.scene.layout.Pane;
  */
 public class PathfinderController {
 
+    /** Information for the rectangles 2D array */
     private final int x = 20;
     private final int y = 15;
     private MapRectangle[][] rectangles = new MapRectangle[x][y];
@@ -30,12 +32,22 @@ public class PathfinderController {
     @FXML
     private Label modeLabel;
 
+    /** Run MenuItem used for enabling when an algorithm is selected. */
+    @FXML
+    private MenuItem runMenuItem;
+
+    /** Pane object used for pushing the rectangles on to. */
     @FXML
     private Pane pane;
 
+    /** This stores information about the rectangles the algorithm starts and ends at. */
     private MapRectangle startRectangle;
     private MapRectangle endRectangle;
 
+    /**
+     * This method runs when the JavaFX window is initialized.
+     * It adds all of the rectangles to the pane with event handlers.
+     */
     @FXML
     public void initialize() {
         final double width = 30.0;
@@ -51,9 +63,9 @@ public class PathfinderController {
                 MapRectangle mapRect = this.rectangles[paneX][paneY];
 
                 if (e.getButton() == MouseButton.PRIMARY) {
-                    mapRect.toggleActive(true);
+                    mapRect.setState(true);
                 } else if (e.getButton() == MouseButton.SECONDARY) {
-                    mapRect.toggleActive(false);
+                    mapRect.setState(false);
                 }
             }
         });
@@ -66,7 +78,7 @@ public class PathfinderController {
 
                 // this changes the color when hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    if (!mapRect.isActive() && !mapRect.isStartOrEnd()) {
+                    if (!mapRect.getState() && !mapRect.isStartOrEnd()) {
                         if (e.isShiftDown()) {
                             mapRect.setFill(MapRectangle.startColor);
                         } else if (e.isControlDown()) {
@@ -79,7 +91,7 @@ public class PathfinderController {
 
                 // this changes the color when not hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    if (!mapRect.isActive() && !mapRect.isStartOrEnd()) {
+                    if (!mapRect.getState() && !mapRect.isStartOrEnd()) {
                         mapRect.setFill(MapRectangle.inActiveColor);
                     }
                 });
@@ -101,10 +113,10 @@ public class PathfinderController {
                             mapRect.setEnd();
                             this.endRectangle = mapRect;
                         } else {
-                            mapRect.toggleActive(true);
+                            mapRect.setState(true);
                         }
                     } else if (e.getButton() == MouseButton.SECONDARY) {
-                        mapRect.toggleActive(false);
+                        mapRect.setState(false);
                     }
                 });
 
