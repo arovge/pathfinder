@@ -8,6 +8,7 @@ package rovgea;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -32,6 +33,9 @@ public class PathfinderController {
 
     @FXML
     private Pane pane;
+
+    private MapRectangle startRectangle;
+    private MapRectangle endRectangle;
 
     @FXML
     public void initialize() {
@@ -62,11 +66,21 @@ public class PathfinderController {
                 MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height);
 
                 // this changes the color when hovered over
-                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> mapRect.setFill(MapRectangle.activeColor));
+                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+                    if (!mapRect.isActive() && !mapRect.isStartOrEnd()) {
+                        if (e.isShiftDown()) {
+                            mapRect.setFill(MapRectangle.startColor);
+                        } else if (e.isControlDown()) {
+                            mapRect.setFill(MapRectangle.endColor);
+                        } else {
+                            mapRect.setFill(MapRectangle.activeColor);
+                        }
+                    }
+                });
 
                 // this changes the color when not hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    if (!mapRect.isActive()) {
+                    if (!mapRect.isActive() && !mapRect.isStartOrEnd()) {
                         mapRect.setFill(MapRectangle.inActiveColor);
                     }
                 });
@@ -74,7 +88,22 @@ public class PathfinderController {
                 // this handles making the rectangle active when clicking on it
                 mapRect.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
                     if (e.getButton() == MouseButton.PRIMARY) {
-                        mapRect.toggleActive(true);
+
+                        if (e.isShiftDown()) {
+                            if (this.startRectangle != null) {
+                                this.startRectangle.removeStartOrEnd();
+                            }
+                            mapRect.setStart();
+                            this.startRectangle = mapRect;
+                        } else if (e.isControlDown()) {
+                            if (this.endRectangle != null) {
+                                this.endRectangle.removeStartOrEnd();
+                            }
+                            mapRect.setEnd();
+                            this.endRectangle = mapRect;
+                        } else {
+                            mapRect.toggleActive(true);
+                        }
                     } else if (e.getButton() == MouseButton.SECONDARY) {
                         mapRect.toggleActive(false);
                     }
