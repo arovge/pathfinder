@@ -9,9 +9,12 @@ package rovgea;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import java.util.ArrayList;
 
 /**
  * This is the controller for the Pathfinder JavaFX file.
@@ -31,6 +34,12 @@ public class PathfinderController {
     /** Label object used for displaying the current mode. */
     @FXML
     private Label modeLabel;
+
+    @FXML
+    private RadioMenuItem bruteforceMenuItem;
+
+    @FXML
+    private RadioMenuItem aStarMenuItem;
 
     /** Run MenuItem used for enabling when an algorithm is selected. */
     @FXML
@@ -74,7 +83,7 @@ public class PathfinderController {
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
-                MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height);
+                MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height, i, j);
 
                 // this changes the color when hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
@@ -106,12 +115,21 @@ public class PathfinderController {
                             }
                             mapRect.setStart();
                             this.startRectangle = mapRect;
+
+                            if (this.endRectangle != null) {
+                                this.runMenuItem.setDisable(false);
+                            }
+
                         } else if (e.isControlDown()) {
                             if (this.endRectangle != null) {
                                 this.endRectangle.removeStartOrEnd();
                             }
                             mapRect.setEnd();
                             this.endRectangle = mapRect;
+
+                            if (this.startRectangle != null) {
+                                this.runMenuItem.setDisable(false);
+                            }
                         } else {
                             mapRect.setState(true);
                         }
@@ -130,7 +148,64 @@ public class PathfinderController {
      * This method runs the current algorithm against the map.
      */
     public void run() {
+        if (this.bruteforceMenuItem.isSelected()) {
+            System.out.println("Running brute force algorithm...");
+            this.bruteforce();
+        } else if (this.aStarMenuItem.isSelected()) {
+            System.out.println("Running A* algorithm...");
+        }
+    }
 
+    private void bruteforce() {
+
+        MapRectangle start = this.startRectangle;
+        MapRectangle end = this.endRectangle;
+
+        boolean notDone = true;
+
+        MapRectangle currentRectangle = start;
+        ArrayList<MapRectangle> todo = new ArrayList<>();
+
+        while (notDone) {
+            // 1. Mark current rectangle as visited
+            currentRectangle.markAsVisited();
+
+            // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
+            if (currentRectangle.arrayX - 1 >= 0 && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
+                todo.add(this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY]);
+            }
+
+            if (currentRectangle.arrayY - 1 >= 0 && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
+                todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1]);
+            }
+
+            if (currentRectangle.arrayX + 1 < this.x && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
+                todo.add(this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY]);
+            }
+
+            if (currentRectangle.arrayY + 1 < this.y && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
+                todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1]);
+            }
+
+            // 3. Set current vertex to be a vertex off the "to do" list
+            MapRectangle newRect = todo.remove(0);
+
+
+            // 4. If current vertex == destination, we're done! EXIT
+            if (newRect == this.endRectangle) {
+                System.out.println("done!");
+                notDone = false;
+            } else {
+                newRect.setFill(MapRectangle.failedPath);
+                currentRectangle = newRect;
+            }
+
+
+
+
+
+            // 5. Goto 1
+        }
     }
 
     /**

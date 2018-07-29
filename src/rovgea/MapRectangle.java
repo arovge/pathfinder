@@ -15,11 +15,19 @@ public class MapRectangle extends Rectangle {
     public final static Paint startColor = Paint.valueOf("#25A2FF");
     public final static Paint endColor = Paint.valueOf("#FF2525");
 
+    public final static Paint failedPath = Paint.valueOf("#CC6666");
+    public final static Paint winPath = Paint.valueOf("81A2BE");
+
     /** This boolean stores the state of the rectangle. */
     private boolean state;
 
     /** This boolean is used for knowing if the rectangle is a start or end rectangle. */
     private boolean isStartOrEnd;
+
+    private boolean isVisited;
+
+    public int arrayX;
+    public int arrayY;
 
     /**
      * This is the only constructor for a MapRectangle. It calls super with
@@ -29,11 +37,23 @@ public class MapRectangle extends Rectangle {
      * @param width width of the rectangle object
      * @param height height of the rectangle object.
      */
-    public MapRectangle(double x, double y, double width, double height) {
+    public MapRectangle(double x, double y, double width, double height, int arX, int arY) {
         super(x, y, width, height);
         this.state = false;
         this.isStartOrEnd = false;
         this.setFill(MapRectangle.inActiveColor);
+
+        this.arrayX = arX;
+        this.arrayY = arY;
+        this.isVisited = false;
+    }
+
+    public void markAsVisited() {
+        this.isVisited = true;
+    }
+
+    public boolean isVisited() {
+        return this.isVisited;
     }
 
     /**
