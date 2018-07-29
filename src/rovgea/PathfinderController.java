@@ -38,6 +38,7 @@ public class PathfinderController {
         final double width = 31.0;
         final double height = 31.0;
 
+        // enable dragging functionality on the pane
         this.pane.setOnMouseDragged(e -> {
             final int paneX = (int) (e.getX() / width);
             final int paneY = (int) (e.getY() / height);
@@ -54,21 +55,23 @@ public class PathfinderController {
             }
         });
 
+        // generate all rectangles and add them to the pane
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
                 MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height);
 
-                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    mapRect.setFill(MapRectangle.activeColor);
-                });
+                // this changes the color when hovered over
+                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> mapRect.setFill(MapRectangle.activeColor));
 
+                // this changes the color when not hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
                     if (!mapRect.isActive()) {
                         mapRect.setFill(MapRectangle.inActiveColor);
                     }
                 });
 
+                // this handles making the rectangle active when clicking on it
                 mapRect.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
                     if (e.getButton() == MouseButton.PRIMARY) {
                         mapRect.toggleActive(true);
