@@ -52,6 +52,10 @@ public class MapRectangle extends Rectangle {
         this.isVisited = true;
     }
 
+    public void markAsUnvisited() {
+        this.isVisited = false;
+    }
+
     public boolean isVisited() {
         return this.isVisited;
     }

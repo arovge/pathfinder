@@ -150,13 +150,18 @@ public class PathfinderController {
     public void run() {
         if (this.bruteforceMenuItem.isSelected()) {
             System.out.println("Running brute force algorithm...");
+            long time = System.nanoTime();
             this.bruteforce();
+            time = System.nanoTime() - time;
+            timeLabel.setText("Time elapsed: " + time + " nanoseconds");
         } else if (this.aStarMenuItem.isSelected()) {
             System.out.println("Running A* algorithm...");
         }
     }
 
     private void bruteforce() {
+
+        System.out.println("running now");
 
         MapRectangle start = this.startRectangle;
         MapRectangle end = this.endRectangle;
@@ -200,11 +205,14 @@ public class PathfinderController {
                 currentRectangle = newRect;
             }
 
-
-
-
-
             // 5. Goto 1
+        }
+
+        // mark all triangles as unvisited
+        for (int i = 0; i < this.x; i++) {
+            for (int j = 0; j < this.y; j++) {
+                this.rectangles[i][j].markAsUnvisited();
+            }
         }
     }
 
