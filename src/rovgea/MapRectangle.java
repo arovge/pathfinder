@@ -1,8 +1,13 @@
+/*
+ * Project: Pathfinder
+ * Author: Austin Rovge
+ * Date: 8/3//2018
+ */
+
 package rovgea;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-
 import java.util.HashMap;
 import java.util.Map;
 

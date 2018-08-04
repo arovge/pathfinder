@@ -1,7 +1,7 @@
 /*
  * Project: Pathfinder
  * Author: Austin Rovge
- * Date: 3/26/2018
+ * Date: 8/3//2018
  */
 
 package rovgea;
@@ -13,7 +13,6 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-
 import java.util.ArrayList;
 
 /**
@@ -62,8 +61,6 @@ public class PathfinderController {
 
         this.addPaneEventFilters();
         this.generateRectangles();
-
-        // todo make this efficient
         this.connectRectangles();
     }
 
@@ -82,6 +79,9 @@ public class PathfinderController {
         }
     }
 
+    /**
+     * This is a rudimentary method for bruteforcing through the map.
+     */
     private void bruteforce() {
 
         System.out.println("running now");
@@ -153,6 +153,9 @@ public class PathfinderController {
 
     }
 
+    /**
+     * This method adds event filters to the pane.
+     */
     private void addPaneEventFilters() {
         // enable dragging functionality on the pane
         this.pane.setOnMouseDragged(e -> {
@@ -172,6 +175,9 @@ public class PathfinderController {
         });
     }
 
+    /**
+     * This method creates all of the MapRectangles and adds them to the pane.
+     */
     private void generateRectangles() {
         // generate all rectangles and add them to the pane
         for (int i = 0; i < this.x; i++) {
@@ -187,6 +193,11 @@ public class PathfinderController {
         }
     }
 
+    /**
+     * This method adds all of the event filters to the MapRectangle object
+     * passed into the method.
+     * @param mapRectangle MapRectangle object to add event filters to
+     */
     private void addRectangleEventFilters(MapRectangle mapRectangle) {
         // this changes the color when hovered over
         mapRectangle.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
@@ -242,51 +253,57 @@ public class PathfinderController {
         });
     }
 
+    /**
+     * This method connects all the rectangles to each other.
+     * It loops through the 2D array and references each rectangle to
+     * each other depending on boundary conditions.
+     */
     private void connectRectangles() {
-                for (int j = 0; j < this.y; j++) {
-                    for (int i = 0; i < this.x; i++) {
-                        MapRectangle mapRect = this.rectangles[i][j];
+        // loop through all rectangles in the 2D array
+        for (int j = 0; j < this.y; j++) {
+            for (int i = 0; i < this.x; i++) {
+                MapRectangle mapRect = this.rectangles[i][j];
 
-                        // top
-                        if (this.rectangles[i][j - 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOP, this.rectangles[i][j - 1]);
-                        }
+                // top
+                if (0 < j) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOP, this.rectangles[i][j - 1]);
+                }
 
-                        // left
-                        if (this.rectangles[i - 1][j] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.LEFT, this.rectangles[i - 1][j]);
-                        }
+                // left
+                if (0 < i) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.LEFT, this.rectangles[i - 1][j]);
+                }
 
-                        // right
-                        if (this.rectangles[i + 1][j] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.RIGHT, this.rectangles[i + 1][j]);
-                        }
+                // right
+                if (i < this.x - 1) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.RIGHT, this.rectangles[i + 1][j]);
+                }
 
-                        // bottom
-                        if (this.rectangles[i][j + 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOM, this.rectangles[i][j + 1]);
-                        }
+                // bottom
+                if (j < this.y - 1) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOM, this.rectangles[i][j + 1]);
+                }
 
-                        // top left
-                        if (this.rectangles[i - 1][j - 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPLEFT, this.rectangles[i - 1][j - 1]);
-                        }
+                // top left
+                if (0 < j && 0 < i) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPLEFT, this.rectangles[i - 1][j - 1]);
+                }
 
-                        // top right
-                        if (this.rectangles[i + 1][j - 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPRIGHT, this.rectangles[i + 1][j - 1]);
-                        }
+                // top right
+                if (0 < j && i < this.x - 1) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPRIGHT, this.rectangles[i + 1][j - 1]);
+                }
 
-                        // bottom left
-                        if (this.rectangles[i - 1][j + 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMLEFT, this.rectangles[i - 1][j + 1]);
-                        }
+                // bottom left
+                if (j < this.y - 1 && 0 < i) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMLEFT, this.rectangles[i - 1][j + 1]);
+                }
 
-                        // bottom right
-                        if (this.rectangles[i + 1][j + 1] != null) {
-                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMRIGHT, this.rectangles[i + 1][j + 1]);
-                        }
-                    }
+                // bottom right
+                if (j < this.y - 1 && i < this.x - 1) {
+                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMRIGHT, this.rectangles[i + 1][j + 1]);
+                }
+            }
         }
     }
 }
