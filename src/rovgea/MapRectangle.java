@@ -9,17 +9,34 @@ import javafx.scene.shape.Rectangle;
  */
 public class MapRectangle extends Rectangle {
 
+    public enum MapRectangleState {
+        BASE,
+        WALL,
+        START,
+        END,
+        SUCCESS,
+        FAILED
+    }
+
+    private MapRectangleState state;
+
     /** Constant static Paint objects used for easily changing values throughout the program. */
-    public final static Paint activeColor = Paint.valueOf("#B8B7B7");
-    public final static Paint inActiveColor = Paint.valueOf("#E0E0E0");
-    public final static Paint startColor = Paint.valueOf("#25A2FF");
-    public final static Paint endColor = Paint.valueOf("#FF2525");
+    protected final static Paint wallColor = Paint.valueOf("#B8B7B7");
+    protected final static Paint baseColor = Paint.valueOf("#E0E0E0");
+    protected final static Paint startColor = Paint.valueOf("#25A2FF");
+    protected final static Paint endColor = Paint.valueOf("#FF2525");
 
-    public final static Paint failedPath = Paint.valueOf("#CC6666");
-    public final static Paint winPath = Paint.valueOf("81A2BE");
+    protected final static Paint failedPath = Paint.valueOf("#CC6666");
+    protected final static Paint successPath = Paint.valueOf("81A2BE");
 
-    /** This boolean stores the state of the rectangle. */
-    private boolean state;
+    private MapRectangle topRect;
+    private MapRectangle bottomRect;
+    private MapRectangle leftRect;
+    private MapRectangle rightRect;
+    private MapRectangle topLeftRect;
+    private MapRectangle topRightRect;
+    private MapRectangle bottomLeftRect;
+    private MapRectangle bottomRightRect;
 
     /** This boolean is used for knowing if the rectangle is a start or end rectangle. */
     private boolean isStartOrEnd;
@@ -39,13 +56,22 @@ public class MapRectangle extends Rectangle {
      */
     public MapRectangle(double x, double y, double width, double height, int arX, int arY) {
         super(x, y, width, height);
-        this.state = false;
+        this.state = MapRectangleState.BASE;
         this.isStartOrEnd = false;
-        this.setFill(MapRectangle.inActiveColor);
+        this.setColor();
 
         this.arrayX = arX;
         this.arrayY = arY;
         this.isVisited = false;
+
+        this.topRect = null;
+        this.bottomRect = null;
+        this.leftRect = null;
+        this.rightRect = null;
+        this.topLeftRect = null;
+        this.topRightRect = null;
+        this.bottomLeftRect = null;
+        this.bottomRightRect = null;
     }
 
     public void markAsVisited() {
@@ -61,53 +87,16 @@ public class MapRectangle extends Rectangle {
     }
 
     /**
-     * This method sets the rectangle to be the start rectangle.
-     */
-    public void setStart() {
-        this.isStartOrEnd = true;
-        this.setFill(MapRectangle.startColor);
-    }
-
-    /**
-     * This method sets the rectangle to be the end rectangle.
-     */
-    public void setEnd() {
-        this.isStartOrEnd = true;
-        this.setFill(MapRectangle.endColor);
-    }
-
-    /**
      * This method returns the state of the rectangle.
      * @return boolean of the state
      */
-    public boolean getState() {
+    public MapRectangleState getState() {
         return this.state;
     }
 
-    /**
-     * This method sets the state and color to be inactive.
-     */
-    public void removeStartOrEnd() {
-        this.isStartOrEnd = false;
-        this.state = false;
-        this.setColor();
-    }
-
-    /**
-     * This method is used for seeing if the rectangle is the start or end rectangle.
-     * @return boolean depending on if it is start or end.
-     */
-    public boolean isStartOrEnd() {
-        return this.isStartOrEnd;
-    }
-
-    /**
-     * This method toggles the active status of the rectangle.
-     * @param bool the boolean to set the state to.
-     */
-    public void setState(boolean bool) {
-        if (this.state != bool) {
-            this.state = !this.state;
+    public void setState(MapRectangleState state) {
+        if (this.state != state) {
+            this.state = state;
             this.setColor();
         }
     }
@@ -116,10 +105,18 @@ public class MapRectangle extends Rectangle {
      * This method sets the color of the rectangle depending on the state of the rectangle.
      */
     private void setColor() {
-        if (this.state) {
-            this.setFill(MapRectangle.activeColor);
-        } else {
-            this.setFill(MapRectangle.inActiveColor);
+        if (this.state == MapRectangleState.BASE) {
+            this.setFill(MapRectangle.baseColor);
+        } else if (this.state == MapRectangleState.WALL) {
+            this.setFill(MapRectangle.wallColor);
+        } else if (this.state == MapRectangleState.START) {
+            this.setFill(MapRectangle.startColor);
+        } else if (this.state == MapRectangleState.END) {
+            this.setFill(MapRectangle.endColor);
+        } else if (this.state == MapRectangleState.SUCCESS) {
+            this.setFill(MapRectangle.successPath);
+        } else if (this.state == MapRectangleState.FAILED) {
+            this.setFill(MapRectangle.failedPath);
         }
     }
 }

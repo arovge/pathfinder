@@ -72,9 +72,9 @@ public class PathfinderController {
                 MapRectangle mapRect = this.rectangles[paneX][paneY];
 
                 if (e.getButton() == MouseButton.PRIMARY) {
-                    mapRect.setState(true);
+                    mapRect.setState(MapRectangle.MapRectangleState.WALL);
                 } else if (e.getButton() == MouseButton.SECONDARY) {
-                    mapRect.setState(false);
+                    mapRect.setState(MapRectangle.MapRectangleState.BASE);
                 }
             }
         });
@@ -87,21 +87,21 @@ public class PathfinderController {
 
                 // this changes the color when hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    if (!mapRect.getState() && !mapRect.isStartOrEnd()) {
+                    if (mapRect.getState() == MapRectangle.MapRectangleState.BASE) {
                         if (e.isShiftDown()) {
                             mapRect.setFill(MapRectangle.startColor);
                         } else if (e.isControlDown()) {
                             mapRect.setFill(MapRectangle.endColor);
                         } else {
-                            mapRect.setFill(MapRectangle.activeColor);
+                            mapRect.setFill(MapRectangle.wallColor);
                         }
                     }
                 });
 
                 // this changes the color when not hovered over
                 mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    if (!mapRect.getState() && !mapRect.isStartOrEnd()) {
-                        mapRect.setFill(MapRectangle.inActiveColor);
+                    if (mapRect.getState() == MapRectangle.MapRectangleState.BASE) {
+                        mapRect.setFill(MapRectangle.baseColor);
                     }
                 });
 
@@ -111,9 +111,9 @@ public class PathfinderController {
 
                         if (e.isShiftDown()) {
                             if (this.startRectangle != null) {
-                                this.startRectangle.removeStartOrEnd();
+                                this.startRectangle.setState(MapRectangle.MapRectangleState.BASE);
                             }
-                            mapRect.setStart();
+                            mapRect.setState(MapRectangle.MapRectangleState.START);
                             this.startRectangle = mapRect;
 
                             if (this.endRectangle != null) {
@@ -122,19 +122,19 @@ public class PathfinderController {
 
                         } else if (e.isControlDown()) {
                             if (this.endRectangle != null) {
-                                this.endRectangle.removeStartOrEnd();
+                                this.endRectangle.setState(MapRectangle.MapRectangleState.BASE);
                             }
-                            mapRect.setEnd();
+                            mapRect.setState(MapRectangle.MapRectangleState.END);
                             this.endRectangle = mapRect;
 
                             if (this.startRectangle != null) {
                                 this.runMenuItem.setDisable(false);
                             }
                         } else {
-                            mapRect.setState(true);
+                            mapRect.setState(MapRectangle.MapRectangleState.WALL);
                         }
                     } else if (e.getButton() == MouseButton.SECONDARY) {
-                        mapRect.setState(false);
+                        mapRect.setState(MapRectangle.MapRectangleState.BASE);
                     }
                 });
 
@@ -176,19 +176,19 @@ public class PathfinderController {
             currentRectangle.markAsVisited();
 
             // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
-            if (currentRectangle.arrayX - 1 >= 0 && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
+            if (currentRectangle.arrayX - 1 >= 0 && this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY]);
             }
 
-            if (currentRectangle.arrayY - 1 >= 0 && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
+            if (currentRectangle.arrayY - 1 >= 0 && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1]);
             }
 
-            if (currentRectangle.arrayX + 1 < this.x && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
+            if (currentRectangle.arrayX + 1 < this.x && this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY]);
             }
 
-            if (currentRectangle.arrayY + 1 < this.y && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
+            if (currentRectangle.arrayY + 1 < this.y && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1]);
             }
 
@@ -201,7 +201,7 @@ public class PathfinderController {
                 System.out.println("done!");
                 notDone = false;
             } else {
-                newRect.setFill(MapRectangle.failedPath);
+                newRect.setState(MapRectangle.MapRectangleState.FAILED);
                 currentRectangle = newRect;
             }
 
