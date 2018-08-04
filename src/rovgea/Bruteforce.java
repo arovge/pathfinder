@@ -12,11 +12,13 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import java.util.ArrayList;
 
+/**
+ * This class is for a brute force path finding algorithm.
+ * It implements the methods in the algorithm interface.
+ */
 public class Bruteforce implements Algorithm {
 
     private long time;
-
-    private boolean done = false;
 
     private MapRectangle currentRectangle;
     private boolean useDiagonalRectangles;
@@ -29,108 +31,110 @@ public class Bruteforce implements Algorithm {
 
     @Override
     public void runPath(MapRectangle currentRectangle, boolean useDiagonalRectangles) {
+        // start timing the process
         this.time = System.nanoTime();
 
         this.currentRectangle = currentRectangle;
         this.useDiagonalRectangles = useDiagonalRectangles;
 
+        // animation code
         KeyFrame keyFrame = new KeyFrame(Duration.millis(100), e -> {
             this.runMap();
         });
 
         this.timeline = new Timeline(keyFrame);
 
-//        while (!this.done) {
-//            timeline.play();
-//        }
-
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        this.timeline.setCycleCount(Animation.INDEFINITE);
+        this.timeline.play();
 
 
         // mark all triangles as unvisited
-        for (int i = 0; i < processed.size(); i++) {
-            processed.get(i).markAsUnvisited();
+        for (int i = 0; i < this.processed.size(); i++) {
+            this.processed.get(i).markAsUnvisited();
         }
 
+        // calculate the total time it took
         this.time = System.nanoTime() - this.time;
     }
 
     private void runMap() {
         // 1. mark current rect as visited
-        currentRectangle.markAsVisited();
-        processed.add(currentRectangle);
+        this.currentRectangle.markAsVisited();
+        this.processed.add(this.currentRectangle);
 
         // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
-        MapRectangle topRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
+        MapRectangle topRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
         if (topRect != null && topRect.canVisit()) {
-            processQueue.add(topRect);
+            this.processQueue.add(topRect);
             topRect.setFill(MapRectangle.notProcessedPath);
         }
 
-        MapRectangle leftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
+        MapRectangle leftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
         if (leftRect != null && leftRect.canVisit()) {
-            processQueue.add(leftRect);
+            this.processQueue.add(leftRect);
             leftRect.setFill(MapRectangle.notProcessedPath);
         }
 
-        MapRectangle rightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
+        MapRectangle rightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
         if (rightRect != null && rightRect.canVisit()) {
-            processQueue.add(rightRect);
+            this.processQueue.add(rightRect);
             rightRect.setFill(MapRectangle.notProcessedPath);
         }
 
-        MapRectangle bottomRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
+        MapRectangle bottomRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
         if (bottomRect != null && bottomRect.canVisit()) {
-            processQueue.add(bottomRect);
+            this.processQueue.add(bottomRect);
             bottomRect.setFill(MapRectangle.notProcessedPath);
         }
 
-        if (useDiagonalRectangles) {
+        if (this.useDiagonalRectangles) {
 
-            MapRectangle topLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
+            MapRectangle topLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
             if (topLeftRect != null && topLeftRect.canVisit()) {
-                processQueue.add(topLeftRect);
+                this.processQueue.add(topLeftRect);
                 topLeftRect.setFill(MapRectangle.notProcessedPath);
             }
 
-            MapRectangle topRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
+            MapRectangle topRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
             if (topRightRect != null && topRightRect.canVisit()) {
-                processQueue.add(topRightRect);
+                this.processQueue.add(topRightRect);
                 topRightRect.setFill(MapRectangle.notProcessedPath);
             }
 
-            MapRectangle bottomLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
+            MapRectangle bottomLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
-                processQueue.add(bottomLeftRect);
+                this.processQueue.add(bottomLeftRect);
                 bottomLeftRect.setFill(MapRectangle.notProcessedPath);
             }
 
-            MapRectangle bottomRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
+            MapRectangle bottomRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
-                processQueue.add(bottomRightRect);
+                this.processQueue.add(bottomRightRect);
                 bottomRightRect.setFill(MapRectangle.notProcessedPath);
             }
         }
 
         // 3. Set current vertex to be a vertex off the "to do" list
-        MapRectangle newRect = processQueue.remove(0);
+        MapRectangle newRect = this.processQueue.remove(0);
 
 
         // 4. If current vertex == destination, we're done! EXIT
         if (newRect.getState() == MapRectangle.states.END) {
             System.out.println("done!");
-            done = true;
-            timeline.stop();
+
+            // stop animation!
+            this.timeline.stop();
         } else {
             newRect.setFill(MapRectangle.processedPath);
-            currentRectangle = newRect;
+            this.currentRectangle = newRect;
         }
-
-        // 5. Goto 1
     }
 
+    /**
+     * This method returns the last operation time. It is calculated when the runPath() method is called.
+     * @return long of the time taken to run the path in nanoseconds
+     */
     @Override
     public long getLastOperationTime() {
         return this.time;

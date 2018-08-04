@@ -34,12 +34,12 @@
                 </Menu>
             <Menu mnemonicParsing="false" text="Algorithms">
                <items>
-                  <RadioMenuItem fx:id="bruteforceMenuItem" mnemonicParsing="false" selected="true" text="Brute Force" onAction="#bruteforce" >
+                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Brute Force" onAction="#bruteforce" >
                      <toggleGroup>
                         <ToggleGroup fx:id="algorithmMenuItems" />
                      </toggleGroup>
                   </RadioMenuItem>
-                  <RadioMenuItem fx:id="aStarMenuItem" mnemonicParsing="false" text="A*" toggleGroup="$algorithmMenuItems" />
+                  <RadioMenuItem mnemonicParsing="false" text="A*" toggleGroup="$algorithmMenuItems" />
                </items>
             </Menu>
                 <Menu mnemonicParsing="false" text="Map Options">

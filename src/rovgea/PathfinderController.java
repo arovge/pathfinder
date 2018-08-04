@@ -35,12 +35,6 @@ public class PathfinderController {
     @FXML
     private Label modeLabel;
 
-    @FXML
-    private RadioMenuItem bruteforceMenuItem;
-
-    @FXML
-    private RadioMenuItem aStarMenuItem;
-
     /** Run MenuItem used for enabling when an algorithm is selected. */
     @FXML
     private MenuItem runMenuItem;
@@ -80,7 +74,7 @@ public class PathfinderController {
     }
 
     /**
-     * This is a rudimentary method for bruteforcing through the map.
+     * This is a rudimentary method for brute forcing through the map.
      */
     @FXML
     private void bruteforce() {
