@@ -45,7 +45,7 @@
                 <Menu mnemonicParsing="false" text="Map Options">
                <items>
                   <CheckMenuItem mnemonicParsing="false" onAction="#showSteps" text="Show Steps" />
-                  <CheckMenuItem mnemonicParsing="false" onAction="#enableDiagonal" text="Enable Diagonal Tiles" />
+                  <CheckMenuItem mnemonicParsing="false" onAction="#toggleDiagonal" text="Enable Diagonal Tiles" />
                </items>
                 </Menu>
             </menus>

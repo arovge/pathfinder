@@ -24,7 +24,7 @@ public class PathfinderController {
     /** Information for the rectangles 2D array */
     private final int x = 20;
     private final int y = 15;
-    private MapRectangle[][] rectangles = new MapRectangle[x][y];
+    private MapRectangle[][] rectangles = new MapRectangle[this.x][this.y];
 
     /** Label object used for storing the time taken to run the path finding algorithm. */
     @FXML
@@ -52,6 +52,8 @@ public class PathfinderController {
     private MapRectangle startRectangle;
     private MapRectangle endRectangle;
 
+    private boolean useDiagonalRectangles = false;
+
     /**
      * This method runs when the JavaFX window is initialized.
      * It adds all of the rectangles to the pane with event handlers.
@@ -73,7 +75,7 @@ public class PathfinderController {
             long time = System.nanoTime();
             this.bruteforce();
             time = System.nanoTime() - time;
-            timeLabel.setText("Time elapsed: " + time + " nanoseconds");
+            this.timeLabel.setText("Time elapsed: " + time + " nanoseconds");
         } else if (this.aStarMenuItem.isSelected()) {
             System.out.println("Running A* algorithm...");
         }
@@ -99,25 +101,52 @@ public class PathfinderController {
             currentRectangle.markAsVisited();
 
             // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
-            if (currentRectangle.arrayX - 1 >= 0 && this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
-                todo.add(this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY]);
+
+            MapRectangle topRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
+            if (topRect != null) {
+                todo.add(topRect);
             }
 
-            if (currentRectangle.arrayY - 1 >= 0 && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
-                todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1]);
+            MapRectangle leftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
+            if (leftRect != null) {
+                todo.add(leftRect);
             }
 
-            if (currentRectangle.arrayX + 1 < this.x && this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
-                todo.add(this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY]);
+            MapRectangle rightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
+            if (rightRect != null) {
+                todo.add(rightRect);
             }
 
-            if (currentRectangle.arrayY + 1 < this.y && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
-                todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1]);
+            MapRectangle bottomRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
+            if (bottomRect != null) {
+                todo.add(bottomRect);
+            }
+
+            if (this.useDiagonalRectangles) {
+
+                MapRectangle topLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
+                if (topLeftRect != null) {
+                    todo.add(topLeftRect);
+                }
+
+                MapRectangle topRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
+                if (topRightRect != null) {
+                    todo.add(topRightRect);
+                }
+
+                MapRectangle bottomLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
+                if (bottomLeftRect != null) {
+                    todo.add(bottomLeftRect);
+                }
+
+                MapRectangle bottomRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
+                if (bottomRightRect != null) {
+                    todo.add(bottomRightRect);
+                }
             }
 
             // 3. Set current vertex to be a vertex off the "to do" list
             MapRectangle newRect = todo.remove(0);
-
 
             // 4. If current vertex == destination, we're done! EXIT
             if (newRect == this.endRectangle) {
@@ -149,8 +178,8 @@ public class PathfinderController {
     /**
      * This method enables diagonal tiles to be drawn on the map.
      */
-    public void enableDiagonal() {
-
+    public void toggleDiagonal() {
+        this.useDiagonalRectangles = !this.useDiagonalRectangles;
     }
 
     /**

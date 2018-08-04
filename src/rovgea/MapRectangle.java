@@ -58,9 +58,6 @@ public class MapRectangle extends Rectangle {
     protected final static Paint failedPath = Paint.valueOf("#CC6666");
     protected final static Paint successPath = Paint.valueOf("81A2BE");
 
-    /** This boolean is used for knowing if the rectangle is a start or end rectangle. */
-    private boolean isStartOrEnd;
-
     private boolean isVisited;
 
     public int arrayX;
@@ -77,7 +74,6 @@ public class MapRectangle extends Rectangle {
     public MapRectangle(double x, double y, double width, double height, int arX, int arY) {
         super(x, y, width, height);
         this.state = MapRectangle.states.BASE;
-        this.isStartOrEnd = false;
         this.setColor();
 
         this.arrayX = arX;
