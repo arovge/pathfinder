@@ -3,12 +3,18 @@ package rovgea;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class is a MapRectangle. It extends the Rectangle object and introduces
  * several additional variables used in logic in the Pathfinder Controller class.
  */
 public class MapRectangle extends Rectangle {
 
+    /**
+     * This is an enum that contains all of the possible states for the MapRectangle.
+     */
     public enum states {
         BASE,
         WALL,
@@ -18,7 +24,22 @@ public class MapRectangle extends Rectangle {
         FAILED
     }
 
-    private states state;
+    /**
+     * This is an enum that contains different neighbors the rectangle could have.
+     */
+    public enum neighbors {
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM,
+        TOPLEFT,
+        TOPRIGHT,
+        BOTTOMLEFT,
+        BOTTOMRIGHT
+    }
+
+    private MapRectangle.states state;
+    public Map<MapRectangle.neighbors, MapRectangle> neighborRectangles;
 
     public static final double width = 30.0;
     public static final double height = 30.0;
@@ -31,15 +52,6 @@ public class MapRectangle extends Rectangle {
 
     protected final static Paint failedPath = Paint.valueOf("#CC6666");
     protected final static Paint successPath = Paint.valueOf("81A2BE");
-
-    private MapRectangle topRect;
-    private MapRectangle bottomRect;
-    private MapRectangle leftRect;
-    private MapRectangle rightRect;
-    private MapRectangle topLeftRect;
-    private MapRectangle topRightRect;
-    private MapRectangle bottomLeftRect;
-    private MapRectangle bottomRightRect;
 
     /** This boolean is used for knowing if the rectangle is a start or end rectangle. */
     private boolean isStartOrEnd;
@@ -67,14 +79,7 @@ public class MapRectangle extends Rectangle {
         this.arrayY = arY;
         this.isVisited = false;
 
-        this.topRect = null;
-        this.bottomRect = null;
-        this.leftRect = null;
-        this.rightRect = null;
-        this.topLeftRect = null;
-        this.topRightRect = null;
-        this.bottomLeftRect = null;
-        this.bottomRightRect = null;
+        this.neighborRectangles = new HashMap<>();
     }
 
     public void markAsVisited() {
@@ -91,12 +96,17 @@ public class MapRectangle extends Rectangle {
 
     /**
      * This method returns the state of the rectangle.
-     * @return boolean of the state
+     * @return MapRectangle states enum value
      */
     public MapRectangle.states getState() {
         return this.state;
     }
 
+    /**
+     * This method sets the state of the rectangle.
+     * It takes in an enum and changes the state and sets the color based on the state
+     * @param state MapRectangles states enum value
+     */
     public void setState(MapRectangle.states state) {
         if (this.state != state) {
             this.state = state;
@@ -106,6 +116,7 @@ public class MapRectangle extends Rectangle {
 
     /**
      * This method sets the color of the rectangle depending on the state of the rectangle.
+     * The method is called from within the class and is dependent on the currently set state.
      */
     private void setColor() {
         if (this.state == MapRectangle.states.BASE) {

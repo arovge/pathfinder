@@ -243,6 +243,50 @@ public class PathfinderController {
     }
 
     private void connectRectangles() {
+                for (int j = 0; j < this.y; j++) {
+                    for (int i = 0; i < this.x; i++) {
+                        MapRectangle mapRect = this.rectangles[i][j];
 
+                        // top
+                        if (this.rectangles[i][j - 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOP, this.rectangles[i][j - 1]);
+                        }
+
+                        // left
+                        if (this.rectangles[i - 1][j] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.LEFT, this.rectangles[i - 1][j]);
+                        }
+
+                        // right
+                        if (this.rectangles[i + 1][j] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.RIGHT, this.rectangles[i + 1][j]);
+                        }
+
+                        // bottom
+                        if (this.rectangles[i][j + 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOM, this.rectangles[i][j + 1]);
+                        }
+
+                        // top left
+                        if (this.rectangles[i - 1][j - 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPLEFT, this.rectangles[i - 1][j - 1]);
+                        }
+
+                        // top right
+                        if (this.rectangles[i + 1][j - 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPRIGHT, this.rectangles[i + 1][j - 1]);
+                        }
+
+                        // bottom left
+                        if (this.rectangles[i - 1][j + 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMLEFT, this.rectangles[i - 1][j + 1]);
+                        }
+
+                        // bottom right
+                        if (this.rectangles[i + 1][j + 1] != null) {
+                            mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMRIGHT, this.rectangles[i + 1][j + 1]);
+                        }
+                    }
+        }
     }
 }
