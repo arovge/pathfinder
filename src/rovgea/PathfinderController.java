@@ -59,89 +59,12 @@ public class PathfinderController {
      */
     @FXML
     public void initialize() {
-        final double width = 30.0;
-        final double height = 30.0;
 
-        // enable dragging functionality on the pane
-        this.pane.setOnMouseDragged(e -> {
-            final int paneX = (int) (e.getX() / width);
-            final int paneY = (int) (e.getY() / height);
+        this.addPaneEventFilters();
+        this.generateRectangles();
 
-            // prevents an ArrayIndexOutOfBoundsException and is probably cheaper resource wise than try/catch
-            if (0 <= paneX && paneX < this.x && 0 <= paneY && paneY < this.y) {
-                MapRectangle mapRect = this.rectangles[paneX][paneY];
-
-                if (e.getButton() == MouseButton.PRIMARY) {
-                    mapRect.setState(MapRectangle.MapRectangleState.WALL);
-                } else if (e.getButton() == MouseButton.SECONDARY) {
-                    mapRect.setState(MapRectangle.MapRectangleState.BASE);
-                }
-            }
-        });
-
-        // generate all rectangles and add them to the pane
-        for (int i = 0; i < this.x; i++) {
-            for (int j = 0; j < this.y; j++) {
-
-                MapRectangle mapRect = new MapRectangle(i * width, j * height, width, height, i, j);
-
-                // this changes the color when hovered over
-                mapRect.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    if (mapRect.getState() == MapRectangle.MapRectangleState.BASE) {
-                        if (e.isShiftDown()) {
-                            mapRect.setFill(MapRectangle.startColor);
-                        } else if (e.isControlDown()) {
-                            mapRect.setFill(MapRectangle.endColor);
-                        } else {
-                            mapRect.setFill(MapRectangle.wallColor);
-                        }
-                    }
-                });
-
-                // this changes the color when not hovered over
-                mapRect.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    if (mapRect.getState() == MapRectangle.MapRectangleState.BASE) {
-                        mapRect.setFill(MapRectangle.baseColor);
-                    }
-                });
-
-                // this handles making the rectangle active when clicking on it
-                mapRect.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
-                    if (e.getButton() == MouseButton.PRIMARY) {
-
-                        if (e.isShiftDown()) {
-                            if (this.startRectangle != null) {
-                                this.startRectangle.setState(MapRectangle.MapRectangleState.BASE);
-                            }
-                            mapRect.setState(MapRectangle.MapRectangleState.START);
-                            this.startRectangle = mapRect;
-
-                            if (this.endRectangle != null) {
-                                this.runMenuItem.setDisable(false);
-                            }
-
-                        } else if (e.isControlDown()) {
-                            if (this.endRectangle != null) {
-                                this.endRectangle.setState(MapRectangle.MapRectangleState.BASE);
-                            }
-                            mapRect.setState(MapRectangle.MapRectangleState.END);
-                            this.endRectangle = mapRect;
-
-                            if (this.startRectangle != null) {
-                                this.runMenuItem.setDisable(false);
-                            }
-                        } else {
-                            mapRect.setState(MapRectangle.MapRectangleState.WALL);
-                        }
-                    } else if (e.getButton() == MouseButton.SECONDARY) {
-                        mapRect.setState(MapRectangle.MapRectangleState.BASE);
-                    }
-                });
-
-                this.pane.getChildren().add(mapRect);
-                this.rectangles[i][j] = mapRect;
-            }
-        }
+        // todo make this efficient
+        this.connectRectangles();
     }
 
     /**
@@ -176,19 +99,19 @@ public class PathfinderController {
             currentRectangle.markAsVisited();
 
             // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
-            if (currentRectangle.arrayX - 1 >= 0 && this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
+            if (currentRectangle.arrayX - 1 >= 0 && this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX - 1][currentRectangle.arrayY]);
             }
 
-            if (currentRectangle.arrayY - 1 >= 0 && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
+            if (currentRectangle.arrayY - 1 >= 0 && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY - 1]);
             }
 
-            if (currentRectangle.arrayX + 1 < this.x && this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
+            if (currentRectangle.arrayX + 1 < this.x && this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX + 1][currentRectangle.arrayY]);
             }
 
-            if (currentRectangle.arrayY + 1 < this.y && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() == MapRectangle.MapRectangleState.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
+            if (currentRectangle.arrayY + 1 < this.y && this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].getState() == MapRectangle.states.BASE && !this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1].isVisited()) {
                 todo.add(this.rectangles[currentRectangle.arrayX][currentRectangle.arrayY + 1]);
             }
 
@@ -201,7 +124,7 @@ public class PathfinderController {
                 System.out.println("done!");
                 notDone = false;
             } else {
-                newRect.setState(MapRectangle.MapRectangleState.FAILED);
+                newRect.setState(MapRectangle.states.FAILED);
                 currentRectangle = newRect;
             }
 
@@ -227,6 +150,99 @@ public class PathfinderController {
      * This method enables diagonal tiles to be drawn on the map.
      */
     public void enableDiagonal() {
+
+    }
+
+    private void addPaneEventFilters() {
+        // enable dragging functionality on the pane
+        this.pane.setOnMouseDragged(e -> {
+            final int paneX = (int) (e.getX() / MapRectangle.width);
+            final int paneY = (int) (e.getY() / MapRectangle.height);
+
+            // prevents an ArrayIndexOutOfBoundsException and is probably cheaper resource wise than try/catch
+            if (0 <= paneX && paneX < this.x && 0 <= paneY && paneY < this.y) {
+                MapRectangle mapRect = this.rectangles[paneX][paneY];
+
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    mapRect.setState(MapRectangle.states.WALL);
+                } else if (e.getButton() == MouseButton.SECONDARY) {
+                    mapRect.setState(MapRectangle.states.BASE);
+                }
+            }
+        });
+    }
+
+    private void generateRectangles() {
+        // generate all rectangles and add them to the pane
+        for (int i = 0; i < this.x; i++) {
+            for (int j = 0; j < this.y; j++) {
+
+                MapRectangle mapRect = new MapRectangle(i * MapRectangle.width, j * MapRectangle.height, MapRectangle.width, MapRectangle.height, i, j);
+
+                this.addRectangleEventFilters(mapRect);
+
+                this.pane.getChildren().add(mapRect);
+                this.rectangles[i][j] = mapRect;
+            }
+        }
+    }
+
+    private void addRectangleEventFilters(MapRectangle mapRectangle) {
+        // this changes the color when hovered over
+        mapRectangle.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+            if (mapRectangle.getState() == MapRectangle.states.BASE) {
+                if (e.isShiftDown()) {
+                    mapRectangle.setFill(MapRectangle.startColor);
+                } else if (e.isControlDown()) {
+                    mapRectangle.setFill(MapRectangle.endColor);
+                } else {
+                    mapRectangle.setFill(MapRectangle.wallColor);
+                }
+            }
+        });
+
+        // this changes the color when not hovered over
+        mapRectangle.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+            if (mapRectangle.getState() == MapRectangle.states.BASE) {
+                mapRectangle.setFill(MapRectangle.baseColor);
+            }
+        });
+
+        // this handles making the rectangle active when clicking on it
+        mapRectangle.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+
+                if (e.isShiftDown()) {
+                    if (this.startRectangle != null) {
+                        this.startRectangle.setState(MapRectangle.states.BASE);
+                    }
+                    mapRectangle.setState(MapRectangle.states.START);
+                    this.startRectangle = mapRectangle;
+
+                    if (this.endRectangle != null) {
+                        this.runMenuItem.setDisable(false);
+                    }
+
+                } else if (e.isControlDown()) {
+                    if (this.endRectangle != null) {
+                        this.endRectangle.setState(MapRectangle.states.BASE);
+                    }
+                    mapRectangle.setState(MapRectangle.states.END);
+                    this.endRectangle = mapRectangle;
+
+                    if (this.startRectangle != null) {
+                        this.runMenuItem.setDisable(false);
+                    }
+                } else {
+                    mapRectangle.setState(MapRectangle.states.WALL);
+                }
+            } else if (e.getButton() == MouseButton.SECONDARY) {
+                mapRectangle.setState(MapRectangle.states.BASE);
+            }
+        });
+    }
+
+    private void connectRectangles() {
 
     }
 }
