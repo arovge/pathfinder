@@ -86,8 +86,8 @@ public class MapRectangle extends Rectangle {
         this.isVisited = false;
     }
 
-    public boolean isUnvisited() {
-        return !this.isVisited;
+    public boolean canVisit() {
+        return this.state != MapRectangle.states.WALL && !this.isVisited;
     }
 
     /**

@@ -30,44 +30,44 @@ public class Bruteforce implements Algorithm {
             // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
             MapRectangle topRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
-            if (topRect != null && topRect.isUnvisited()) {
+            if (topRect != null && topRect.canVisit()) {
                 todo.add(topRect);
             }
 
             MapRectangle leftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
-            if (leftRect != null && leftRect.isUnvisited()) {
+            if (leftRect != null && leftRect.canVisit()) {
                 todo.add(leftRect);
             }
 
             MapRectangle rightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
-            if (rightRect != null && rightRect.isUnvisited()) {
+            if (rightRect != null && rightRect.canVisit()) {
                 todo.add(rightRect);
             }
 
             MapRectangle bottomRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
-            if (bottomRect != null && bottomRect.isUnvisited()) {
+            if (bottomRect != null && bottomRect.canVisit()) {
                 todo.add(bottomRect);
             }
 
             if (useDiagonalRectangles) {
 
                 MapRectangle topLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
-                if (topLeftRect != null && topLeftRect.isUnvisited()) {
+                if (topLeftRect != null && topLeftRect.canVisit()) {
                     todo.add(topLeftRect);
                 }
 
                 MapRectangle topRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
-                if (topRightRect != null && topRightRect.isUnvisited()) {
+                if (topRightRect != null && topRightRect.canVisit()) {
                     todo.add(topRightRect);
                 }
 
                 MapRectangle bottomLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
-                if (bottomLeftRect != null && bottomLeftRect.isUnvisited()) {
+                if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
                     todo.add(bottomLeftRect);
                 }
 
                 MapRectangle bottomRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
-                if (bottomRightRect != null && bottomRightRect.isUnvisited()) {
+                if (bottomRightRect != null && bottomRightRect.canVisit()) {
                     todo.add(bottomRightRect);
                 }
             }
