@@ -13,7 +13,10 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This is the controller for the Pathfinder JavaFX file.
@@ -54,6 +57,8 @@ public class PathfinderController {
 
     private boolean useDiagonalRectangles = false;
 
+    private boolean showSteps = true;
+
     /**
      * This method runs when the JavaFX window is initialized.
      * It adds all of the rectangles to the pane with event handlers.
@@ -75,7 +80,7 @@ public class PathfinderController {
             long time = System.nanoTime();
             this.bruteforce();
             time = System.nanoTime() - time;
-            this.timeLabel.setText("Time elapsed: " + time + " nanoseconds");
+            formatTime(time);
         } else if (this.aStarMenuItem.isSelected()) {
             System.out.println("Running A* algorithm...");
         }
@@ -171,8 +176,8 @@ public class PathfinderController {
     /**
      * This method shows the intermediate steps the algorithm goes through to find the correct path.
      */
-    public void showSteps() {
-
+    public void toggleSteps() {
+        this.showSteps = !this.showSteps;
     }
 
     /**
@@ -334,5 +339,53 @@ public class PathfinderController {
                 }
             }
         }
+    }
+
+    /**
+     * This is a helper method used for helping format time in the time Label object.
+     * @param time the time to be formatted in nanoseconds
+     */
+    private void formatTime(long time) {
+
+        // used for unit conversion
+        final double siUnitDiff = 1000;
+        final int minInHour = 60;
+        final int secInMin = 60;
+        final int milliInSec = 1000;
+
+        // custom string added to time label object
+        String timeStr = "";
+
+        DecimalFormat threeDigitFormat = new DecimalFormat("###");
+        DecimalFormat multipleUnitFormat = new DecimalFormat("00");
+
+        // if statements to determine how to display time in what units
+        if (time < siUnitDiff) {
+
+            // nanoseconds
+            timeStr = threeDigitFormat.format(time) + " nanoseconds";
+        } else if (time / siUnitDiff < siUnitDiff) {
+
+            // microseconds
+            timeStr = TimeUnit.NANOSECONDS.toMicros(time) + "." +
+                    threeDigitFormat.format(time % siUnitDiff) + " microseconds";
+        } else if (time / (siUnitDiff * siUnitDiff) < siUnitDiff) {
+
+            // milliseconds
+            timeStr = TimeUnit.NANOSECONDS.toMillis(time) + "." +
+                    threeDigitFormat.format(TimeUnit.NANOSECONDS.toMicros((long)
+                            (time % (siUnitDiff * siUnitDiff)))) + " milliseconds";
+        } else if (time / (siUnitDiff * siUnitDiff * siUnitDiff) < siUnitDiff) {
+
+            // larger than nano, micro, and milli
+            timeStr = multipleUnitFormat.format(TimeUnit.NANOSECONDS.toMinutes(time)
+                    % minInHour) + ":" +
+                    multipleUnitFormat.format(TimeUnit.NANOSECONDS.toSeconds(time)
+                            % secInMin) + "." +
+                    multipleUnitFormat.format(TimeUnit.NANOSECONDS.toMillis(time) % milliInSec);
+
+        }
+
+        this.timeLabel.setText("Time elapsed: " + timeStr);
     }
 }
