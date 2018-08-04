@@ -13,9 +13,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,6 +57,8 @@ public class PathfinderController {
 
     private boolean showSteps = true;
 
+    private Algorithm algorithm = new Bruteforce();
+
     /**
      * This method runs when the JavaFX window is initialized.
      * It adds all of the rectangles to the pane with event handlers.
@@ -75,102 +75,17 @@ public class PathfinderController {
      * This method runs the current algorithm against the map.
      */
     public void run() {
-        if (this.bruteforceMenuItem.isSelected()) {
-            System.out.println("Running brute force algorithm...");
-            long time = System.nanoTime();
-            this.bruteforce();
-            time = System.nanoTime() - time;
-            formatTime(time);
-        } else if (this.aStarMenuItem.isSelected()) {
-            System.out.println("Running A* algorithm...");
-        }
+        this.algorithm.runPath(this.startRectangle, this.useDiagonalRectangles);
+        this.formatTime(this.algorithm.getLastOperationTime());
     }
 
     /**
      * This is a rudimentary method for bruteforcing through the map.
      */
+    @FXML
     private void bruteforce() {
 
-        System.out.println("running now");
-
-        MapRectangle start = this.startRectangle;
-
-        boolean notDone = true;
-
-        MapRectangle currentRectangle = start;
-        ArrayList<MapRectangle> todo = new ArrayList<>();
-
-        while (notDone) {
-
-            // 1. Mark current rectangle as visited
-            currentRectangle.markAsVisited();
-
-            // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
-
-            MapRectangle topRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
-            if (topRect != null && topRect.isUnvisited()) {
-                todo.add(topRect);
-            }
-
-            MapRectangle leftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
-            if (leftRect != null && leftRect.isUnvisited()) {
-                todo.add(leftRect);
-            }
-
-            MapRectangle rightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
-            if (rightRect != null && rightRect.isUnvisited()) {
-                todo.add(rightRect);
-            }
-
-            MapRectangle bottomRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
-            if (bottomRect != null && bottomRect.isUnvisited()) {
-                todo.add(bottomRect);
-            }
-
-            if (this.useDiagonalRectangles) {
-
-                MapRectangle topLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
-                if (topLeftRect != null && topLeftRect.isUnvisited()) {
-                    todo.add(topLeftRect);
-                }
-
-                MapRectangle topRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
-                if (topRightRect != null && topRightRect.isUnvisited()) {
-                    todo.add(topRightRect);
-                }
-
-                MapRectangle bottomLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
-                if (bottomLeftRect != null && bottomLeftRect.isUnvisited()) {
-                    todo.add(bottomLeftRect);
-                }
-
-                MapRectangle bottomRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
-                if (bottomRightRect != null && bottomRightRect.isUnvisited()) {
-                    todo.add(bottomRightRect);
-                }
-            }
-
-            // 3. Set current vertex to be a vertex off the "to do" list
-            MapRectangle newRect = todo.remove(0);
-
-            // 4. If current vertex == destination, we're done! EXIT
-            if (newRect == this.endRectangle) {
-                System.out.println("done!");
-                notDone = false;
-            } else {
-                newRect.setState(MapRectangle.states.FAILED);
-                currentRectangle = newRect;
-            }
-
-            // 5. Goto 1
-        }
-
-        // mark all triangles as unvisited
-        for (int i = 0; i < this.x; i++) {
-            for (int j = 0; j < this.y; j++) {
-                this.rectangles[i][j].markAsUnvisited();
-            }
-        }
+        this.algorithm = new Bruteforce();
     }
 
     /**

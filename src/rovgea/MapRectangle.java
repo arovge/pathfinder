@@ -1,7 +1,7 @@
 /*
  * Project: Pathfinder
  * Author: Austin Rovge
- * Date: 8/3//2018
+ * Date: 8/3/2018
  */
 
 package rovgea;

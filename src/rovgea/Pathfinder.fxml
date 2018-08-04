@@ -34,7 +34,7 @@
                 </Menu>
             <Menu mnemonicParsing="false" text="Algorithms">
                <items>
-                  <RadioMenuItem fx:id="bruteforceMenuItem" mnemonicParsing="false" selected="true" text="Brute Force">
+                  <RadioMenuItem fx:id="bruteforceMenuItem" mnemonicParsing="false" selected="true" text="Brute Force" onAction="#bruteforce" >
                      <toggleGroup>
                         <ToggleGroup fx:id="algorithmMenuItems" />
                      </toggleGroup>
