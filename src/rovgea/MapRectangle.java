@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class MapRectangle extends Rectangle {
 
-    public enum MapRectangleState {
+    public enum states {
         BASE,
         WALL,
         START,
@@ -18,7 +18,10 @@ public class MapRectangle extends Rectangle {
         FAILED
     }
 
-    private MapRectangleState state;
+    private states state;
+
+    public static final double width = 30.0;
+    public static final double height = 30.0;
 
     /** Constant static Paint objects used for easily changing values throughout the program. */
     protected final static Paint wallColor = Paint.valueOf("#B8B7B7");
@@ -56,7 +59,7 @@ public class MapRectangle extends Rectangle {
      */
     public MapRectangle(double x, double y, double width, double height, int arX, int arY) {
         super(x, y, width, height);
-        this.state = MapRectangleState.BASE;
+        this.state = MapRectangle.states.BASE;
         this.isStartOrEnd = false;
         this.setColor();
 
@@ -90,11 +93,11 @@ public class MapRectangle extends Rectangle {
      * This method returns the state of the rectangle.
      * @return boolean of the state
      */
-    public MapRectangleState getState() {
+    public MapRectangle.states getState() {
         return this.state;
     }
 
-    public void setState(MapRectangleState state) {
+    public void setState(MapRectangle.states state) {
         if (this.state != state) {
             this.state = state;
             this.setColor();
@@ -105,17 +108,17 @@ public class MapRectangle extends Rectangle {
      * This method sets the color of the rectangle depending on the state of the rectangle.
      */
     private void setColor() {
-        if (this.state == MapRectangleState.BASE) {
+        if (this.state == MapRectangle.states.BASE) {
             this.setFill(MapRectangle.baseColor);
-        } else if (this.state == MapRectangleState.WALL) {
+        } else if (this.state == MapRectangle.states.WALL) {
             this.setFill(MapRectangle.wallColor);
-        } else if (this.state == MapRectangleState.START) {
+        } else if (this.state == MapRectangle.states.START) {
             this.setFill(MapRectangle.startColor);
-        } else if (this.state == MapRectangleState.END) {
+        } else if (this.state == MapRectangle.states.END) {
             this.setFill(MapRectangle.endColor);
-        } else if (this.state == MapRectangleState.SUCCESS) {
+        } else if (this.state == MapRectangle.states.SUCCESS) {
             this.setFill(MapRectangle.successPath);
-        } else if (this.state == MapRectangleState.FAILED) {
+        } else if (this.state == MapRectangle.states.FAILED) {
             this.setFill(MapRectangle.failedPath);
         }
     }
