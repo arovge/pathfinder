@@ -2,7 +2,7 @@
 This is some JavaFX application I made to play with path finding algorithms.
 
 ### What it is
-This is a `JavaFX` application. All of the squares are added to the window dynamically and have their event filters added before being added.
+This is a JavaFX application. All of the squares are added to the window dynamically and have their event filters added before being added.
 
 The user can select what path finding algorithm they would like to use to traverse the intractable map.
 
