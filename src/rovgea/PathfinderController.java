@@ -84,7 +84,6 @@ public class PathfinderController {
      */
     @FXML
     private void bruteforce() {
-
         this.algorithm = new Bruteforce();
     }
 

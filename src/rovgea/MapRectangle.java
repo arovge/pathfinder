@@ -24,9 +24,7 @@ public class MapRectangle extends Rectangle {
         BASE,
         WALL,
         START,
-        END,
-        SUCCESS,
-        FAILED
+        END
     }
 
     /**
@@ -55,8 +53,8 @@ public class MapRectangle extends Rectangle {
     protected final static Paint startColor = Paint.valueOf("#25A2FF");
     protected final static Paint endColor = Paint.valueOf("#FF2525");
 
-    protected final static Paint failedPath = Paint.valueOf("#CC6666");
-    protected final static Paint successPath = Paint.valueOf("81A2BE");
+    protected final static Paint processedPath = Paint.valueOf("#CC6666");
+    protected final static Paint notProcessedPath = Paint.valueOf("81A2BE");
 
     private boolean isVisited;
 
@@ -123,10 +121,6 @@ public class MapRectangle extends Rectangle {
             this.setFill(MapRectangle.startColor);
         } else if (this.state == MapRectangle.states.END) {
             this.setFill(MapRectangle.endColor);
-        } else if (this.state == MapRectangle.states.SUCCESS) {
-            this.setFill(MapRectangle.successPath);
-        } else if (this.state == MapRectangle.states.FAILED) {
-            this.setFill(MapRectangle.failedPath);
         }
     }
 }
