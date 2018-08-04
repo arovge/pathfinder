@@ -60,9 +60,6 @@ public class MapRectangle extends Rectangle {
 
     private boolean isVisited;
 
-    public int arrayX;
-    public int arrayY;
-
     /**
      * This is the only constructor for a MapRectangle. It calls super with
      * all parameters passed into the constructor. It also sets the rectangle to be inactive.
@@ -71,13 +68,11 @@ public class MapRectangle extends Rectangle {
      * @param width width of the rectangle object
      * @param height height of the rectangle object.
      */
-    public MapRectangle(double x, double y, double width, double height, int arX, int arY) {
+    public MapRectangle(double x, double y, double width, double height) {
         super(x, y, width, height);
         this.state = MapRectangle.states.BASE;
         this.setColor();
 
-        this.arrayX = arX;
-        this.arrayY = arY;
         this.isVisited = false;
 
         this.neighborRectangles = new HashMap<>();

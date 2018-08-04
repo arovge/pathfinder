@@ -103,44 +103,44 @@ public class PathfinderController {
             // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
             MapRectangle topRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
-            if (topRect != null) {
+            if (topRect != null && !topRect.isVisited()) {
                 todo.add(topRect);
             }
 
             MapRectangle leftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
-            if (leftRect != null) {
+            if (leftRect != null && !leftRect.isVisited()) {
                 todo.add(leftRect);
             }
 
             MapRectangle rightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
-            if (rightRect != null) {
+            if (rightRect != null && !rightRect.isVisited()) {
                 todo.add(rightRect);
             }
 
             MapRectangle bottomRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
-            if (bottomRect != null) {
+            if (bottomRect != null && !bottomRect.isVisited()) {
                 todo.add(bottomRect);
             }
 
             if (this.useDiagonalRectangles) {
 
                 MapRectangle topLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
-                if (topLeftRect != null) {
+                if (topLeftRect != null && !topLeftRect.isVisited()) {
                     todo.add(topLeftRect);
                 }
 
                 MapRectangle topRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
-                if (topRightRect != null) {
+                if (topRightRect != null && !topRightRect.isVisited()) {
                     todo.add(topRightRect);
                 }
 
                 MapRectangle bottomLeftRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
-                if (bottomLeftRect != null) {
+                if (bottomLeftRect != null && !bottomLeftRect.isVisited()) {
                     todo.add(bottomLeftRect);
                 }
 
                 MapRectangle bottomRightRect = currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
-                if (bottomRightRect != null) {
+                if (bottomRightRect != null && !bottomRightRect.isVisited()) {
                     todo.add(bottomRightRect);
                 }
             }
@@ -212,7 +212,7 @@ public class PathfinderController {
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
-                MapRectangle mapRect = new MapRectangle(i * MapRectangle.width, j * MapRectangle.height, MapRectangle.width, MapRectangle.height, i, j);
+                MapRectangle mapRect = new MapRectangle(i * MapRectangle.width, j * MapRectangle.height, MapRectangle.width, MapRectangle.height);
 
                 this.addRectangleEventFilters(mapRect);
 
