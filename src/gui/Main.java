@@ -43,7 +43,7 @@ public class Main extends Application {
         /*
          * Create logger. Add handler. Remove parent handler.
          */
-        Pathfinder.logger = Logger.getLogger("Pathfinder Logger");
+        Main.logger = Logger.getLogger("Pathfinder Logger");
         try {
             FileHandler handler = new FileHandler(System.getProperty("user.dir")
                     + File.separator + "log.txt");

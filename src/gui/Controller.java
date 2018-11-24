@@ -102,17 +102,17 @@ public class Controller {
     private void addPaneEventFilters() {
         // enable dragging functionality on the pane
         this.pane.setOnMouseDragged(e -> {
-            final int paneX = (int) (e.getX() / MapRectangle.width);
-            final int paneY = (int) (e.getY() / MapRectangle.height);
+            final int paneX = (int) (e.getX() / MapRectangle.WIDTH);
+            final int paneY = (int) (e.getY() / MapRectangle.HEIGHT);
 
-            // prevents an ArrayIndexOutOfBoundsException and is probably cheaper resource wise than try/catch
+            // prevents an ArrayIndexOutOfBoundsException and is cheaper resource wise than try/catch
             if (0 <= paneX && paneX < this.x && 0 <= paneY && paneY < this.y) {
                 MapRectangle mapRect = this.rectangles[paneX][paneY];
 
                 if (e.getButton() == MouseButton.PRIMARY) {
                     mapRect.setState(MapRectangle.states.WALL);
                 } else if (e.getButton() == MouseButton.SECONDARY) {
-                    mapRect.setState(MapRectangle.states.BASE);
+                    mapRect.setState(MapRectangle.states.NORMAL);
                 }
             }
         });
@@ -126,7 +126,7 @@ public class Controller {
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
-                MapRectangle mapRect = new MapRectangle(i * MapRectangle.width, j * MapRectangle.height, MapRectangle.width, MapRectangle.height);
+                MapRectangle mapRect = new MapRectangle(i * MapRectangle.WIDTH, j * MapRectangle.HEIGHT, MapRectangle.WIDTH, MapRectangle.HEIGHT);
 
                 this.addRectangleEventFilters(mapRect);
 
@@ -144,21 +144,21 @@ public class Controller {
     private void addRectangleEventFilters(MapRectangle mapRectangle) {
         // this changes the color when hovered over
         mapRectangle.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-            if (mapRectangle.getState() == MapRectangle.states.BASE) {
+            if (mapRectangle.getState() == MapRectangle.states.NORMAL) {
                 if (e.isShiftDown()) {
-                    mapRectangle.setFill(MapRectangle.startColor);
+                    mapRectangle.setStroke(MapRectangle.START_COLOR);
                 } else if (e.isControlDown()) {
-                    mapRectangle.setFill(MapRectangle.endColor);
+                    mapRectangle.setStroke(MapRectangle.END_COLOR);
                 } else {
-                    mapRectangle.setFill(MapRectangle.wallColor);
+                    mapRectangle.setStroke(MapRectangle.WALL_COLOR);
                 }
             }
         });
 
         // this changes the color when not hovered over
         mapRectangle.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-            if (mapRectangle.getState() == MapRectangle.states.BASE) {
-                mapRectangle.setFill(MapRectangle.baseColor);
+            if (mapRectangle.getState() == MapRectangle.states.NORMAL) {
+                mapRectangle.setStroke(MapRectangle.NORMAL_COLOR);
             }
         });
 
@@ -168,7 +168,7 @@ public class Controller {
 
                 if (e.isShiftDown()) {
                     if (this.startRectangle != null) {
-                        this.startRectangle.setState(MapRectangle.states.BASE);
+                        this.startRectangle.setState(MapRectangle.states.NOT_PROCESSED);
                     }
                     mapRectangle.setState(MapRectangle.states.START);
                     this.startRectangle = mapRectangle;
@@ -179,7 +179,7 @@ public class Controller {
 
                 } else if (e.isControlDown()) {
                     if (this.endRectangle != null) {
-                        this.endRectangle.setState(MapRectangle.states.BASE);
+                        this.endRectangle.setState(MapRectangle.states.NOT_PROCESSED);
                     }
                     mapRectangle.setState(MapRectangle.states.END);
                     this.endRectangle = mapRectangle;
@@ -191,7 +191,7 @@ public class Controller {
                     mapRectangle.setState(MapRectangle.states.WALL);
                 }
             } else if (e.getButton() == MouseButton.SECONDARY) {
-                mapRectangle.setState(MapRectangle.states.BASE);
+                mapRectangle.setState(MapRectangle.states.NOT_PROCESSED);
             }
         });
     }

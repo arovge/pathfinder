@@ -68,25 +68,25 @@ public class Bruteforce implements Algorithm {
         MapRectangle topRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
         if (topRect != null && topRect.canVisit()) {
             this.processQueue.add(topRect);
-            topRect.setFill(MapRectangle.notProcessedPath);
+            topRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
         }
 
         MapRectangle leftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
         if (leftRect != null && leftRect.canVisit()) {
             this.processQueue.add(leftRect);
-            leftRect.setFill(MapRectangle.notProcessedPath);
+            leftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
         }
 
         MapRectangle rightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
         if (rightRect != null && rightRect.canVisit()) {
             this.processQueue.add(rightRect);
-            rightRect.setFill(MapRectangle.notProcessedPath);
+            rightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
         }
 
         MapRectangle bottomRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
         if (bottomRect != null && bottomRect.canVisit()) {
             this.processQueue.add(bottomRect);
-            bottomRect.setFill(MapRectangle.notProcessedPath);
+            bottomRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
         }
 
         if (this.useDiagonalRectangles) {
@@ -94,25 +94,25 @@ public class Bruteforce implements Algorithm {
             MapRectangle topLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
             if (topLeftRect != null && topLeftRect.canVisit()) {
                 this.processQueue.add(topLeftRect);
-                topLeftRect.setFill(MapRectangle.notProcessedPath);
+                topLeftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
             }
 
             MapRectangle topRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
             if (topRightRect != null && topRightRect.canVisit()) {
                 this.processQueue.add(topRightRect);
-                topRightRect.setFill(MapRectangle.notProcessedPath);
+                topRightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
             }
 
             MapRectangle bottomLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
                 this.processQueue.add(bottomLeftRect);
-                bottomLeftRect.setFill(MapRectangle.notProcessedPath);
+                bottomLeftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
             }
 
             MapRectangle bottomRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
                 this.processQueue.add(bottomRightRect);
-                bottomRightRect.setFill(MapRectangle.notProcessedPath);
+                bottomRightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
             }
         }
 
@@ -127,7 +127,7 @@ public class Bruteforce implements Algorithm {
             // stop animation!
             this.timeline.stop();
         } else {
-            newRect.setFill(MapRectangle.processedPath);
+            newRect.setFill(MapRectangle.PROCESSED_COLOR);
             this.currentRectangle = newRect;
         }
     }
