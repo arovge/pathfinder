@@ -13,6 +13,6 @@ import gui.MapRectangle;
  * It has two methods, one for path finding and another for returning the operation time.
  */
 public interface Algorithm {
-    void runPath(MapRectangle currentRectangle, boolean useDiagonalRectangles);
+    void runPath(MapRectangle startRectangle, MapRectangle endRectangle, boolean useDiagonalRectangles);
     long getLastOperationTime();
 }

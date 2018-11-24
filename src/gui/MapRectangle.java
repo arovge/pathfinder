@@ -44,7 +44,15 @@ public class MapRectangle extends Rectangle {
     }
 
     private MapRectangle.states state;
-    public Map<MapRectangle.neighbors, MapRectangle> neighborRectangles;
+
+    public MapRectangle top;
+    public MapRectangle right;
+    public MapRectangle left;
+    public MapRectangle bottom;
+    public MapRectangle topleft;
+    public MapRectangle topright;
+    public MapRectangle bottomleft;
+    public MapRectangle bottomright;
 
     public static final double WIDTH = 30.0;
     public static final double HEIGHT = 30.0;
@@ -82,7 +90,6 @@ public class MapRectangle extends Rectangle {
         this.x = (int) (x / MapRectangle.WIDTH);
         this.y = (int) (y / MapRectangle.HEIGHT);
 
-        this.neighborRectangles = new HashMap<>();
     }
 
     public void markAsVisited() {

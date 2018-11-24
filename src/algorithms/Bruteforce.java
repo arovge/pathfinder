@@ -12,6 +12,8 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import gui.MapRectangle;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * This class is for a brute force path finding algorithms.
@@ -24,18 +26,22 @@ public class Bruteforce implements Algorithm {
     private MapRectangle currentRectangle;
     private boolean useDiagonalRectangles;
 
-    private ArrayList<MapRectangle> processQueue = new ArrayList<>();
-    private ArrayList<MapRectangle> processed = new ArrayList<>();
+    private Queue<MapRectangle> processQueue = new LinkedList<>();
+    private Queue<MapRectangle> processed = new LinkedList<>();
 
     private Timeline timeline;
 
+    private MapRectangle startRectangle;
+    private MapRectangle endRectangle;
 
     @Override
-    public void runPath(MapRectangle currentRectangle, boolean useDiagonalRectangles) {
+    public void runPath(MapRectangle startRectangle, MapRectangle endRectangle, boolean useDiagonalRectangles) {
         // start timing the process
         this.time = System.nanoTime();
 
-        this.currentRectangle = currentRectangle;
+        this.startRectangle = startRectangle;
+        this.endRectangle = endRectangle;
+        this.currentRectangle = startRectangle;
         this.useDiagonalRectangles = useDiagonalRectangles;
 
         // animation code
@@ -50,74 +56,77 @@ public class Bruteforce implements Algorithm {
 
 
         // mark all triangles as unvisited
-        for (int i = 0; i < this.processed.size(); i++) {
-            this.processed.get(i).markAsUnvisited();
-        }
+//        for (int i = 0; i < this.processed.size(); i++) {
+//            this.processed.get(i).markAsUnvisited();
+//        }
 
         // calculate the total time it took
         this.time = System.nanoTime() - this.time;
     }
 
     private void runMap() {
+
+
+
         // 1. mark current rect as visited
         this.currentRectangle.markAsVisited();
         this.processed.add(this.currentRectangle);
 
         // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
-        MapRectangle topRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOP);
+        MapRectangle topRect = this.currentRectangle.top;
         if (topRect != null && topRect.canVisit()) {
             this.processQueue.add(topRect);
-            topRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+            topRect.setState(MapRectangle.states.NOT_PROCESSED);
         }
 
-        MapRectangle leftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.LEFT);
+        MapRectangle leftRect = this.currentRectangle.left;
         if (leftRect != null && leftRect.canVisit()) {
             this.processQueue.add(leftRect);
-            leftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+            leftRect.setState(MapRectangle.states.NOT_PROCESSED);
         }
 
-        MapRectangle rightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.RIGHT);
+        MapRectangle rightRect = this.currentRectangle.right;
         if (rightRect != null && rightRect.canVisit()) {
             this.processQueue.add(rightRect);
-            rightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+            rightRect.setState(MapRectangle.states.NOT_PROCESSED);
         }
 
-        MapRectangle bottomRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOM);
+        MapRectangle bottomRect = this.currentRectangle.bottom;
         if (bottomRect != null && bottomRect.canVisit()) {
             this.processQueue.add(bottomRect);
-            bottomRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+            bottomRect.setState(MapRectangle.states.NOT_PROCESSED);
         }
 
         if (this.useDiagonalRectangles) {
 
-            MapRectangle topLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPLEFT);
+            MapRectangle topLeftRect = this.currentRectangle.topleft;
             if (topLeftRect != null && topLeftRect.canVisit()) {
                 this.processQueue.add(topLeftRect);
-                topLeftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+                topLeftRect.setState(MapRectangle.states.NOT_PROCESSED);
             }
 
-            MapRectangle topRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.TOPRIGHT);
+            MapRectangle topRightRect = this.currentRectangle.topright;
             if (topRightRect != null && topRightRect.canVisit()) {
                 this.processQueue.add(topRightRect);
-                topRightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+                topRightRect.setState(MapRectangle.states.NOT_PROCESSED);
             }
 
-            MapRectangle bottomLeftRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMLEFT);
+            MapRectangle bottomLeftRect = this.currentRectangle.bottomleft;
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
                 this.processQueue.add(bottomLeftRect);
-                bottomLeftRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+                bottomLeftRect.setState(MapRectangle.states.NOT_PROCESSED);
             }
 
-            MapRectangle bottomRightRect = this.currentRectangle.neighborRectangles.get(MapRectangle.neighbors.BOTTOMRIGHT);
+            MapRectangle bottomRightRect = this.currentRectangle.bottomright;
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
                 this.processQueue.add(bottomRightRect);
-                bottomRightRect.setFill(MapRectangle.NOT_PROCESSED_COLOR);
+                bottomRightRect.setState(MapRectangle.states.NOT_PROCESSED);
             }
         }
 
         // 3. Set current vertex to be a vertex off the "to do" list
-        MapRectangle newRect = this.processQueue.remove(0);
+        MapRectangle newRect = this.processQueue.poll();
 
 
         // 4. If current vertex == destination, we're done! EXIT
@@ -127,7 +136,7 @@ public class Bruteforce implements Algorithm {
             // stop animation!
             this.timeline.stop();
         } else {
-            newRect.setFill(MapRectangle.PROCESSED_COLOR);
+            newRect.setState(MapRectangle.states.PROCESSED);
             this.currentRectangle = newRect;
         }
     }

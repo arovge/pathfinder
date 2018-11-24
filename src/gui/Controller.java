@@ -70,7 +70,7 @@ public class Controller {
      * This method runs the current algorithms against the map.
      */
     public void run() {
-        this.algorithm.runPath(this.startRectangle, this.useDiagonalRectangles);
+        this.algorithm.runPath(this.startRectangle, this.endRectangle, this.useDiagonalRectangles);
         this.formatTime(this.algorithm.getLastOperationTime());
     }
 
@@ -209,42 +209,42 @@ public class Controller {
 
                 // top
                 if (0 < j) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOP, this.rectangles[i][j - 1]);
+                    mapRect.top = this.rectangles[i][j - 1];
                 }
 
                 // left
                 if (0 < i) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.LEFT, this.rectangles[i - 1][j]);
+                    mapRect.left = this.rectangles[i - 1][j];
                 }
 
                 // right
                 if (i < this.x - 1) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.RIGHT, this.rectangles[i + 1][j]);
+                    mapRect.right = this.rectangles[i + 1][j];
                 }
 
                 // bottom
                 if (j < this.y - 1) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOM, this.rectangles[i][j + 1]);
+                    mapRect.bottom = this.rectangles[i][j + 1];
                 }
 
                 // top left
                 if (0 < j && 0 < i) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPLEFT, this.rectangles[i - 1][j - 1]);
+                    mapRect.topleft  = this.rectangles[i - 1][j - 1];
                 }
 
                 // top right
                 if (0 < j && i < this.x - 1) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.TOPRIGHT, this.rectangles[i + 1][j - 1]);
+                    mapRect.topright  = this.rectangles[i + 1][j - 1];
                 }
 
                 // bottom left
                 if (j < this.y - 1 && 0 < i) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMLEFT, this.rectangles[i - 1][j + 1]);
+                    mapRect.bottomleft  = this.rectangles[i - 1][j + 1];
                 }
 
                 // bottom right
                 if (j < this.y - 1 && i < this.x - 1) {
-                    mapRect.neighborRectangles.put(MapRectangle.neighbors.BOTTOMRIGHT, this.rectangles[i + 1][j + 1]);
+                    mapRect.bottomright  = this.rectangles[i + 1][j + 1];
                 }
             }
         }
