@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * This is the driver class for Lab04. It starts the JavaFX window and sets up the logger.
  */
-public class Pathfinder extends Application {
+public class Main extends Application {
 
     /** This is the logger object used by all classes in the program */
     public static Logger logger;
@@ -35,8 +35,8 @@ public class Pathfinder extends Application {
         final int stageWidth = 600;
         final int stageHeight = 500;
 
-        Parent root = FXMLLoader.load(getClass().getResource("Pathfinder.fxml"));
-        primaryStage.setTitle("Pathfinder");
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        primaryStage.setTitle("Main");
         primaryStage.setScene(new Scene(root, stageWidth, stageHeight));
         primaryStage.setResizable(false);
 
@@ -47,10 +47,10 @@ public class Pathfinder extends Application {
         try {
             FileHandler handler = new FileHandler(System.getProperty("user.dir")
                     + File.separator + "log.txt");
-            Pathfinder.logger.addHandler(handler);
-            Pathfinder.logger.setUseParentHandlers(false);
+            Main.logger.addHandler(handler);
+            Main.logger.setUseParentHandlers(false);
         } catch (IOException e) {
-            Pathfinder.logger.severe("Could not add handler to logger");
+            Main.logger.severe("Could not add handler to logger");
         }
 
         primaryStage.show();

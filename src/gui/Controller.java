@@ -18,10 +18,10 @@ import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This is the controller for the Pathfinder JavaFX file.
- * It holds all of the methods found in the Pathfinder.fxml file.
+ * This is the controller for the Main JavaFX file.
+ * It holds all of the methods found in the Main.fxml file.
  */
-public class PathfinderController {
+public class Controller {
 
     /** Information for the rectangles 2D array */
     private final int x = 20;
