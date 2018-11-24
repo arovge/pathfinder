@@ -4,12 +4,13 @@
  * Date: 8/3//2018
  */
 
-package rovgea;
+package gui;
 
+import algorithms.Algorithm;
+import algorithms.Bruteforce;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -27,7 +28,7 @@ public class PathfinderController {
     private final int y = 15;
     private MapRectangle[][] rectangles = new MapRectangle[this.x][this.y];
 
-    /** Label object used for storing the time taken to run the path finding algorithm. */
+    /** Label object used for storing the time taken to run the path finding algorithms. */
     @FXML
     private Label timeLabel;
 
@@ -35,7 +36,7 @@ public class PathfinderController {
     @FXML
     private Label modeLabel;
 
-    /** Run MenuItem used for enabling when an algorithm is selected. */
+    /** Run MenuItem used for enabling when an algorithms is selected. */
     @FXML
     private MenuItem runMenuItem;
 
@@ -43,7 +44,7 @@ public class PathfinderController {
     @FXML
     private Pane pane;
 
-    /** This stores information about the rectangles the algorithm starts and ends at. */
+    /** This stores information about the rectangles the algorithms starts and ends at. */
     private MapRectangle startRectangle;
     private MapRectangle endRectangle;
 
@@ -66,7 +67,7 @@ public class PathfinderController {
     }
 
     /**
-     * This method runs the current algorithm against the map.
+     * This method runs the current algorithms against the map.
      */
     public void run() {
         this.algorithm.runPath(this.startRectangle, this.useDiagonalRectangles);
@@ -82,7 +83,7 @@ public class PathfinderController {
     }
 
     /**
-     * This method shows the intermediate steps the algorithm goes through to find the correct path.
+     * This method shows the intermediate steps the algorithms goes through to find the correct path.
      */
     public void toggleSteps() {
         this.showSteps = !this.showSteps;

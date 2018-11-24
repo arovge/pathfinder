@@ -4,7 +4,7 @@
  * Date: 8/3/2018
  */
 
-package rovgea;
+package gui;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -48,13 +48,13 @@ public class MapRectangle extends Rectangle {
     public static final double height = 30.0;
 
     /** Constant static Paint objects used for easily changing values throughout the program. */
-    protected final static Paint wallColor = Paint.valueOf("#B8B7B7");
-    protected final static Paint baseColor = Paint.valueOf("#E0E0E0");
-    protected final static Paint startColor = Paint.valueOf("#25A2FF");
-    protected final static Paint endColor = Paint.valueOf("#FF2525");
+    public final static Paint wallColor = Paint.valueOf("#B8B7B7");
+    public final static Paint baseColor = Paint.valueOf("#E0E0E0");
+    public final static Paint startColor = Paint.valueOf("#25A2FF");
+    public final static Paint endColor = Paint.valueOf("#FF2525");
 
-    protected final static Paint processedPath = Paint.valueOf("#CC6666");
-    protected final static Paint notProcessedPath = Paint.valueOf("81A2BE");
+    public final static Paint processedPath = Paint.valueOf("#CC6666");
+    public final static Paint notProcessedPath = Paint.valueOf("81A2BE");
 
     private boolean isVisited;
 
@@ -68,8 +68,7 @@ public class MapRectangle extends Rectangle {
      */
     public MapRectangle(double x, double y, double width, double height) {
         super(x, y, width, height);
-        this.state = MapRectangle.states.BASE;
-        this.setColor();
+        this.setState(states.BASE);
 
         this.isVisited = false;
 

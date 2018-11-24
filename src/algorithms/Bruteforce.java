@@ -4,17 +4,18 @@
  * Date: 8/4/2018
  */
 
-package rovgea;
+package algorithms;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import gui.MapRectangle;
 import java.util.ArrayList;
 
 /**
- * This class is for a brute force path finding algorithm.
- * It implements the methods in the algorithm interface.
+ * This class is for a brute force path finding algorithms.
+ * It implements the methods in the algorithms interface.
  */
 public class Bruteforce implements Algorithm {
 

@@ -4,7 +4,7 @@
  * Date: 8/3/2018
  */
 
-package rovgea;
+package gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
