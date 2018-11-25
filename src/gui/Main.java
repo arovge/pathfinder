@@ -48,7 +48,7 @@ public class Main extends Application {
             Main.logger.info("Log directory created.");
         }
 
-        /* add filehandler to logger */
+        // add filehandler to logger
         try {
             FileHandler handler = new FileHandler(dir + File.separator + new Date().toString().replaceAll(" |:", "-") + ".log");
             Main.logger.addHandler(handler);

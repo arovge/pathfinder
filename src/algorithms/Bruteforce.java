@@ -23,25 +23,28 @@ public class Bruteforce implements Algorithm {
 
     private long time;
 
+    private Node startNode;
     private Node currentNode;
+    private Node endNode;
+
     private boolean useDiagonalNodes;
 
-    private Queue<Node> processQueue = new LinkedList<>();
-    private Queue<Node> processed = new LinkedList<>();
+    private Queue<Node> toProcess;
+    private Queue<Node> processed;
 
     private Timeline timeline;
 
-    private Node startNode;
-    private Node endNode;
-
     @Override
-    public void runPath(Node startRectangle, Node endRectangle, boolean useDiagonalNodes) {
+    public void runPath(Node startNode, Node endRectangle, boolean useDiagonalNodes) {
         // start timing the process
         this.time = System.nanoTime();
 
-        this.startNode = startRectangle;
+        this.toProcess = new LinkedList<>();
+        this.processed = new LinkedList<>();
+
+        this.startNode = startNode;
         this.endNode = endRectangle;
-        this.currentNode = startRectangle;
+        this.currentNode = endRectangle;
         this.useDiagonalNodes = useDiagonalNodes;
 
         // animation code
@@ -55,13 +58,10 @@ public class Bruteforce implements Algorithm {
         this.timeline.play();
 
 
-        // mark all triangles as unvisited
-//        for (int i = 0; i < this.processed.size(); i++) {
-//            this.processed.get(i).markAsUnvisited();
-//        }
-
-        // calculate the total time it took
-        this.time = System.nanoTime() - this.time;
+        // mark all processed nodes as unvisited
+        for (int i = 0; i < this.processed.size(); i++) {
+            this.processed.forEach(Node::markAsUnvisited);
+        }
     }
 
     private void runMap() {
@@ -76,25 +76,25 @@ public class Bruteforce implements Algorithm {
 
         Node topRect = this.currentNode.top;
         if (topRect != null && topRect.canVisit()) {
-            this.processQueue.add(topRect);
+            this.toProcess.add(topRect);
             topRect.setState(State.NOT_PROCESSED);
         }
 
         Node leftRect = this.currentNode.left;
         if (leftRect != null && leftRect.canVisit()) {
-            this.processQueue.add(leftRect);
+            this.toProcess.add(leftRect);
             leftRect.setState(State.NOT_PROCESSED);
         }
 
         Node rightRect = this.currentNode.right;
         if (rightRect != null && rightRect.canVisit()) {
-            this.processQueue.add(rightRect);
+            this.toProcess.add(rightRect);
             rightRect.setState(State.NOT_PROCESSED);
         }
 
         Node bottomRect = this.currentNode.bottom;
         if (bottomRect != null && bottomRect.canVisit()) {
-            this.processQueue.add(bottomRect);
+            this.toProcess.add(bottomRect);
             bottomRect.setState(State.NOT_PROCESSED);
         }
 
@@ -102,31 +102,31 @@ public class Bruteforce implements Algorithm {
 
             Node topLeftRect = this.currentNode.topleft;
             if (topLeftRect != null && topLeftRect.canVisit()) {
-                this.processQueue.add(topLeftRect);
+                this.toProcess.add(topLeftRect);
                 topLeftRect.setState(State.NOT_PROCESSED);
             }
 
             Node topRightRect = this.currentNode.topright;
             if (topRightRect != null && topRightRect.canVisit()) {
-                this.processQueue.add(topRightRect);
+                this.toProcess.add(topRightRect);
                 topRightRect.setState(State.NOT_PROCESSED);
             }
 
             Node bottomLeftRect = this.currentNode.bottomleft;
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
-                this.processQueue.add(bottomLeftRect);
+                this.toProcess.add(bottomLeftRect);
                 bottomLeftRect.setState(State.NOT_PROCESSED);
             }
 
             Node bottomRightRect = this.currentNode.bottomright;
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
-                this.processQueue.add(bottomRightRect);
+                this.toProcess.add(bottomRightRect);
                 bottomRightRect.setState(State.NOT_PROCESSED);
             }
         }
 
         // 3. Set current vertex to be a vertex off the "to do" list
-        Node newRect = this.processQueue.poll();
+        Node newRect = this.toProcess.poll();
 
 
         // 4. If current vertex == destination, we're done! EXIT
@@ -135,6 +135,9 @@ public class Bruteforce implements Algorithm {
 
             // stop animation!
             this.timeline.stop();
+
+            // calculate the total time it took
+            this.time = System.nanoTime() - this.time;
         } else {
             newRect.setState(State.PROCESSED);
             this.currentNode = newRect;

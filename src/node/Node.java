@@ -53,9 +53,6 @@ public class Node extends Rectangle {
 
     private boolean isVisited;
 
-    private int x;
-    private int y;
-
     /**
      * This is the only constructor for a Node. It calls super with
      * all parameters passed into the constructor. It also sets the node to be inactive.
@@ -69,10 +66,6 @@ public class Node extends Rectangle {
         this.setState(State.NORMAL);
 
         this.isVisited = false;
-
-        this.x = (int) (x / Node.WIDTH);
-        this.y = (int) (y / Node.HEIGHT);
-
     }
 
     public void markAsVisited() {
@@ -142,13 +135,5 @@ public class Node extends Rectangle {
                 this.setStroke(Node.END_COLOR);
                 break;
         }
-    }
-
-    public int getXCoordinate() {
-        return this.x;
-    }
-
-    public int getYCoordinate() {
-        return this.y;
     }
 }
