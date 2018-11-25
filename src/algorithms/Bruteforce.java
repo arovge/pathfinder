@@ -12,7 +12,6 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import node.Node;
 import node.State;
-
 import java.util.LinkedList;
 import java.util.Queue;
 

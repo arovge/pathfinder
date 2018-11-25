@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import node.Node;
 import node.State;
-
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 

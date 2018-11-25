@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class Main extends Application {
 
     /** This is the logger object used by all classes in the program */
-    public static Logger logger;
+    public static final Logger logger = Logger.getLogger(Main.class.getName());
 
     /**
      * This is the start method for the application.
@@ -48,10 +48,7 @@ public class Main extends Application {
             Main.logger.info("Log directory created.");
         }
 
-        /*
-         * Create logger. Add handler. Remove parent handler.
-         */
-        Main.logger = Logger.getLogger("Pathfinder Logger");
+        /* add filehandler to logger */
         try {
             FileHandler handler = new FileHandler(dir + File.separator + new Date().toString().replaceAll(" |:", "-") + ".log");
             Main.logger.addHandler(handler);
