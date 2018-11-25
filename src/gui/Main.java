@@ -13,11 +13,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 /**
- * This is the driver class for Lab04. It starts the JavaFX window and sets up the logger.
+ * This is the driver class for the Pathfinder program. It starts the JavaFX window and sets up the logger.
  */
 public class Main extends Application {
 
@@ -36,19 +37,27 @@ public class Main extends Application {
         final int stageHeight = 500;
 
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Main");
+        primaryStage.setTitle("Pathfinder");
         primaryStage.setScene(new Scene(root, stageWidth, stageHeight));
         primaryStage.setResizable(false);
+
+        File dir = new File(System.getProperty("user.dir") + File.separator + "logs");
+
+        if (!dir.exists()) {
+            dir.mkdir();
+            Main.logger.info("Log directory created.");
+        }
 
         /*
          * Create logger. Add handler. Remove parent handler.
          */
         Main.logger = Logger.getLogger("Pathfinder Logger");
         try {
-            FileHandler handler = new FileHandler(System.getProperty("user.dir")
-                    + File.separator + "log.txt");
+            FileHandler handler = new FileHandler(dir + File.separator + new Date().toString().replaceAll(" |:", "-") + ".log");
             Main.logger.addHandler(handler);
             Main.logger.setUseParentHandlers(false);
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> handler.close() ));
         } catch (IOException e) {
             Main.logger.severe("Could not add handler to logger");
         }

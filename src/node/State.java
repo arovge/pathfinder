@@ -4,12 +4,12 @@
  * Date: 11/24/2018
  */
 
-package rectangle;
+package node;
 
 /**
- * This is an enum that contains all of the possible states for the MapRectangle.
+ * This is an enum that contains all of the possible states for the Node.
  */
-public enum RectState {
+public enum State {
     NOT_PROCESSED,
     PROCESSED,
     NORMAL,

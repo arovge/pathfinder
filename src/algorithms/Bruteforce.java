@@ -10,8 +10,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import rectangle.MapRectangle;
-import rectangle.RectState;
+import node.Node;
+import node.State;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,26 +24,26 @@ public class Bruteforce implements Algorithm {
 
     private long time;
 
-    private MapRectangle currentRectangle;
-    private boolean useDiagonalRectangles;
+    private Node currentNode;
+    private boolean useDiagonalNodes;
 
-    private Queue<MapRectangle> processQueue = new LinkedList<>();
-    private Queue<MapRectangle> processed = new LinkedList<>();
+    private Queue<Node> processQueue = new LinkedList<>();
+    private Queue<Node> processed = new LinkedList<>();
 
     private Timeline timeline;
 
-    private MapRectangle startRectangle;
-    private MapRectangle endRectangle;
+    private Node startNode;
+    private Node endNode;
 
     @Override
-    public void runPath(MapRectangle startRectangle, MapRectangle endRectangle, boolean useDiagonalRectangles) {
+    public void runPath(Node startRectangle, Node endRectangle, boolean useDiagonalNodes) {
         // start timing the process
         this.time = System.nanoTime();
 
-        this.startRectangle = startRectangle;
-        this.endRectangle = endRectangle;
-        this.currentRectangle = startRectangle;
-        this.useDiagonalRectangles = useDiagonalRectangles;
+        this.startNode = startRectangle;
+        this.endNode = endRectangle;
+        this.currentNode = startRectangle;
+        this.useDiagonalNodes = useDiagonalNodes;
 
         // animation code
         KeyFrame keyFrame = new KeyFrame(Duration.millis(100), e -> {
@@ -70,75 +70,75 @@ public class Bruteforce implements Algorithm {
 
 
         // 1. mark current rect as visited
-        this.currentRectangle.markAsVisited();
-        this.processed.add(this.currentRectangle);
+        this.currentNode.markAsVisited();
+        this.processed.add(this.currentNode);
 
         // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
-        MapRectangle topRect = this.currentRectangle.top;
+        Node topRect = this.currentNode.top;
         if (topRect != null && topRect.canVisit()) {
             this.processQueue.add(topRect);
-            topRect.setState(RectState.NOT_PROCESSED);
+            topRect.setState(State.NOT_PROCESSED);
         }
 
-        MapRectangle leftRect = this.currentRectangle.left;
+        Node leftRect = this.currentNode.left;
         if (leftRect != null && leftRect.canVisit()) {
             this.processQueue.add(leftRect);
-            leftRect.setState(RectState.NOT_PROCESSED);
+            leftRect.setState(State.NOT_PROCESSED);
         }
 
-        MapRectangle rightRect = this.currentRectangle.right;
+        Node rightRect = this.currentNode.right;
         if (rightRect != null && rightRect.canVisit()) {
             this.processQueue.add(rightRect);
-            rightRect.setState(RectState.NOT_PROCESSED);
+            rightRect.setState(State.NOT_PROCESSED);
         }
 
-        MapRectangle bottomRect = this.currentRectangle.bottom;
+        Node bottomRect = this.currentNode.bottom;
         if (bottomRect != null && bottomRect.canVisit()) {
             this.processQueue.add(bottomRect);
-            bottomRect.setState(RectState.NOT_PROCESSED);
+            bottomRect.setState(State.NOT_PROCESSED);
         }
 
-        if (this.useDiagonalRectangles) {
+        if (this.useDiagonalNodes) {
 
-            MapRectangle topLeftRect = this.currentRectangle.topleft;
+            Node topLeftRect = this.currentNode.topleft;
             if (topLeftRect != null && topLeftRect.canVisit()) {
                 this.processQueue.add(topLeftRect);
-                topLeftRect.setState(RectState.NOT_PROCESSED);
+                topLeftRect.setState(State.NOT_PROCESSED);
             }
 
-            MapRectangle topRightRect = this.currentRectangle.topright;
+            Node topRightRect = this.currentNode.topright;
             if (topRightRect != null && topRightRect.canVisit()) {
                 this.processQueue.add(topRightRect);
-                topRightRect.setState(RectState.NOT_PROCESSED);
+                topRightRect.setState(State.NOT_PROCESSED);
             }
 
-            MapRectangle bottomLeftRect = this.currentRectangle.bottomleft;
+            Node bottomLeftRect = this.currentNode.bottomleft;
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
                 this.processQueue.add(bottomLeftRect);
-                bottomLeftRect.setState(RectState.NOT_PROCESSED);
+                bottomLeftRect.setState(State.NOT_PROCESSED);
             }
 
-            MapRectangle bottomRightRect = this.currentRectangle.bottomright;
+            Node bottomRightRect = this.currentNode.bottomright;
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
                 this.processQueue.add(bottomRightRect);
-                bottomRightRect.setState(RectState.NOT_PROCESSED);
+                bottomRightRect.setState(State.NOT_PROCESSED);
             }
         }
 
         // 3. Set current vertex to be a vertex off the "to do" list
-        MapRectangle newRect = this.processQueue.poll();
+        Node newRect = this.processQueue.poll();
 
 
         // 4. If current vertex == destination, we're done! EXIT
-        if (newRect.getState() == RectState.END) {
+        if (newRect.getState() == State.END) {
             System.out.println("done!");
 
             // stop animation!
             this.timeline.stop();
         } else {
-            newRect.setState(RectState.PROCESSED);
-            this.currentRectangle = newRect;
+            newRect.setState(State.PROCESSED);
+            this.currentNode = newRect;
         }
     }
 
