@@ -8,6 +8,8 @@ package node;
 
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is a Node. It extends the Rectangle object and introduces
@@ -18,24 +20,17 @@ public class Node extends Rectangle {
     private Types.PrimaryState primaryState;
     private Types.SecondaryState secondaryState;
 
-    public Node top;
-    public Node right;
-    public Node left;
-    public Node bottom;
-    public Node topleft;
-    public Node topright;
-    public Node bottomleft;
-    public Node bottomright;
+    private Map<Types.Neighbor, Node> neighborsNodeMap;
 
     public static final double WIDTH = 30.0;
     public static final double HEIGHT = 30.0;
 
-    /** Constant static Paint objects used for easily changing values throughout the program. */
+    /* Constant static Paint objects used for easily changing values throughout the program. */
     private final static Paint WALL_COLOR = Paint.valueOf("#B8B7B7");
     private final static Paint NORMAL_COLOR = Paint.valueOf("#E0E0E0");
     private final static Paint START_COLOR = Paint.valueOf("#25A2FF");
-    private final static Paint END_COLOR = Paint.valueOf("#BEAC52");
-    private final static Paint PROCESSED_COLOR = Paint.valueOf("#CC6666");
+    private final static Paint END_COLOR = Paint.valueOf("#CC6666");
+    private final static Paint PROCESSED_COLOR = Paint.valueOf("#BEAC52");
     private final static Paint NOT_PROCESSED_COLOR = Paint.valueOf("#81BE81");
 
     private boolean isVisited;
@@ -51,6 +46,7 @@ public class Node extends Rectangle {
     public Node(double x, double y, double width, double height) {
         super(x, y, width, height);
         this.setState(Types.PrimaryState.NORMAL);
+        this.neighborsNodeMap = new HashMap<>();
 
         this.isVisited = false;
     }
@@ -65,6 +61,14 @@ public class Node extends Rectangle {
 
     public boolean canVisit() {
         return this.primaryState != Types.PrimaryState.WALL && this.secondaryState != Types.SecondaryState.PROCESSED && !this.isVisited;
+    }
+
+    public void setNeighbor(Types.Neighbor neighborType, Node neighbor) {
+        this.neighborsNodeMap.put(neighborType, neighbor);
+    }
+
+    public Node getNeighbor(Types.Neighbor neighborType) {
+        return this.neighborsNodeMap.get(neighborType);
     }
 
     /**

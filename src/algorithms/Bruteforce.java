@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import node.Node;
+import node.Types;
 import node.Types.PrimaryState;
 import node.Types.SecondaryState;
 import java.util.LinkedList;
@@ -65,25 +66,25 @@ public class Bruteforce extends Algorithm {
 
         // 2. Add all connected rectangles (which are not marked as visited) to a "to do" list
 
-        Node topNode = this.currentNode.top;
+        Node topNode = this.currentNode.getNeighbor(Types.Neighbor.TOP);
         if (topNode != null && topNode.canVisit() && !this.toProcess.contains(topNode)) {
             this.toProcess.add(topNode);
             topNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
         }
 
-        Node leftNode = this.currentNode.left;
+        Node leftNode = this.currentNode.getNeighbor(Types.Neighbor.LEFT);
         if (leftNode != null && leftNode.canVisit() && !this.toProcess.contains(leftNode)) {
             this.toProcess.add(leftNode);
             leftNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
         }
 
-        Node rightNode = this.currentNode.right;
+        Node rightNode = this.currentNode.getNeighbor(Types.Neighbor.RIGHT);
         if (rightNode != null && rightNode.canVisit() && !this.toProcess.contains(rightNode)) {
             this.toProcess.add(rightNode);
             rightNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
         }
 
-        Node bottomNode = this.currentNode.bottom;
+        Node bottomNode = this.currentNode.getNeighbor(Types.Neighbor.BOTTOM);
         if (bottomNode != null && bottomNode.canVisit() && !this.toProcess.contains(bottomNode)) {
             this.toProcess.add(bottomNode);
             bottomNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
@@ -91,25 +92,25 @@ public class Bruteforce extends Algorithm {
 
         if (useDiagonalNodes) {
 
-            Node topLeftNode = this.currentNode.topleft;
+            Node topLeftNode = this.currentNode.getNeighbor(Types.Neighbor.TOP_LEFT);
             if (topLeftNode != null && topLeftNode.canVisit() && !this.toProcess.contains(topLeftNode)) {
                 this.toProcess.add(topLeftNode);
                 topLeftNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
             }
 
-            Node topRightNode = this.currentNode.topright;
+            Node topRightNode = this.currentNode.getNeighbor(Types.Neighbor.TOP_RIGHT);
             if (topRightNode != null && topRightNode.canVisit() && !this.toProcess.contains(topRightNode)) {
                 this.toProcess.add(topRightNode);
                 topRightNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
             }
 
-            Node bottomLeftNode = this.currentNode.bottomleft;
+            Node bottomLeftNode = this.currentNode.getNeighbor(Types.Neighbor.BOTTOM_LEFT);
             if (bottomLeftNode != null && bottomLeftNode.canVisit() && !this.toProcess.contains(bottomLeftNode)) {
                 this.toProcess.add(bottomLeftNode);
                 bottomLeftNode.setSecondaryState(SecondaryState.NOT_PROCESSED);
             }
 
-            Node bottomRightNode = this.currentNode.bottomright;
+            Node bottomRightNode = this.currentNode.getNeighbor(Types.Neighbor.BOTTOM_RIGHT);
             if (bottomRightNode != null && bottomRightNode.canVisit() && !this.toProcess.contains(bottomRightNode)) {
                 this.toProcess.add(bottomRightNode);
                 bottomRightNode.setSecondaryState(SecondaryState.NOT_PROCESSED);

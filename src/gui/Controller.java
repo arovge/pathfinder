@@ -15,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import node.Node;
+import node.Types;
 import node.Types.PrimaryState;
 
 /**
@@ -211,42 +212,42 @@ public class Controller {
 
                 // top
                 if (0 < j) {
-                    mapNode.top = this.nodes[i][j - 1];
+                    mapNode.setNeighbor(Types.Neighbor.TOP, this.nodes[i][j - 1]);
                 }
 
                 // left
                 if (0 < i) {
-                    mapNode.left = this.nodes[i - 1][j];
+                    mapNode.setNeighbor(Types.Neighbor.LEFT, this.nodes[i - 1][j]);
                 }
 
                 // right
                 if (i < this.x - 1) {
-                    mapNode.right = this.nodes[i + 1][j];
+                    mapNode.setNeighbor(Types.Neighbor.RIGHT, this.nodes[i + 1][j]);
                 }
 
                 // bottom
                 if (j < this.y - 1) {
-                    mapNode.bottom = this.nodes[i][j + 1];
+                    mapNode.setNeighbor(Types.Neighbor.BOTTOM, this.nodes[i][j + 1]);
                 }
 
                 // top left
                 if (0 < j && 0 < i) {
-                    mapNode.topleft  = this.nodes[i - 1][j - 1];
+                    mapNode.setNeighbor(Types.Neighbor.TOP_LEFT, this.nodes[i - 1][j - 1]);
                 }
 
                 // top right
                 if (0 < j && i < this.x - 1) {
-                    mapNode.topright  = this.nodes[i + 1][j - 1];
+                    mapNode.setNeighbor(Types.Neighbor.TOP_RIGHT, this.nodes[i + 1][j - 1]);
                 }
 
                 // bottom left
                 if (j < this.y - 1 && 0 < i) {
-                    mapNode.bottomleft  = this.nodes[i - 1][j + 1];
+                    mapNode.setNeighbor(Types.Neighbor.BOTTOM_LEFT, this.nodes[i - 1][j + 1]);
                 }
 
                 // bottom right
                 if (j < this.y - 1 && i < this.x - 1) {
-                    mapNode.bottomright  = this.nodes[i + 1][j + 1];
+                    mapNode.setNeighbor(Types.Neighbor.BOTTOM_RIGHT, this.nodes[i + 1][j + 1]);
                 }
             }
         }

@@ -31,4 +31,18 @@ public class Types {
         NOT_PROCESSED,
         PROCESSED
     }
+
+    /**
+     * This enum stores the different types of neighbors a node can have.
+     */
+    public enum Neighbor {
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM,
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    }
 }
