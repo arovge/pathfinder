@@ -18,6 +18,8 @@ public class Node extends Rectangle {
     private PrimaryState primaryState;
     private SecondaryState secondaryState;
 
+
+
     public Node top;
     public Node right;
     public Node left;
@@ -34,9 +36,9 @@ public class Node extends Rectangle {
     private final static Paint WALL_COLOR = Paint.valueOf("#B8B7B7");
     private final static Paint NORMAL_COLOR = Paint.valueOf("#E0E0E0");
     private final static Paint START_COLOR = Paint.valueOf("#25A2FF");
-    private final static Paint END_COLOR = Paint.valueOf("#FF2525");
+    private final static Paint END_COLOR = Paint.valueOf("#BEAC52");
     private final static Paint PROCESSED_COLOR = Paint.valueOf("#CC6666");
-    private final static Paint NOT_PROCESSED_COLOR = Paint.valueOf("81A2BE");
+    private final static Paint NOT_PROCESSED_COLOR = Paint.valueOf("#81BE81");
 
     private boolean isVisited;
 

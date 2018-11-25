@@ -9,33 +9,34 @@ package algorithms;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.util.Duration;
 import node.Node;
 import node.PrimaryState;
 import node.SecondaryState;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * This class is for a brute force path finding algorithms.
- * It implements the methods in the algorithms interface.
+ * It extends the methods in the abstract algorithms class.
  */
-public class Bruteforce implements Algorithm {
+public class Bruteforce extends Algorithm {
 
-    private long time;
-
+    private Label timeLabel;
     private Node currentNode;
+
+    private Timeline timeline;
 
     private Queue<Node> toProcess;
     private LinkedList<Node> processed;
 
-    private Timeline timeline;
-
     @Override
-    public void runPath(Node currentNode, boolean useDiagonalNodes) {
+    public void runPath(Node currentNode, boolean useDiagonalNodes, Label timeLabel) {
         // start timing the process
         this.time = System.nanoTime();
+
+        this.timeLabel = timeLabel;
 
         this.toProcess = new LinkedList<>();
         this.processed = new LinkedList<>();
@@ -118,7 +119,6 @@ public class Bruteforce implements Algorithm {
         // 3. Set current vertex to be a vertex off the "to do" list
         Node newNode = this.toProcess.poll();
 
-
         // 4. If current vertex == destination, we're done! EXIT
         if (newNode.getPrimaryState() == PrimaryState.END) {
 
@@ -127,18 +127,10 @@ public class Bruteforce implements Algorithm {
 
             // calculate the total time it took
             this.time = System.nanoTime() - this.time;
+            this.formatTime(this.timeLabel);
         } else {
             newNode.setSecondaryState(SecondaryState.PROCESSED);
             this.currentNode = newNode;
         }
-    }
-
-    /**
-     * This method returns the last operation time. It is calculated when the runPath() method is called.
-     * @return long of the time taken to run the path in nanoseconds
-     */
-    @Override
-    public long getLastOperationTime() {
-        return this.time;
     }
 }

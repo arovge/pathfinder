@@ -72,7 +72,7 @@ public class Controller {
      */
     public void run() {
         this.modeLabel.setText("Running");
-        this.algorithm.runPath(this.startNode, this.useDiagonalNodes);
+        this.algorithm.runPath(this.startNode, this.useDiagonalNodes, this.timeLabel);
     }
 
     /**
@@ -252,54 +252,5 @@ public class Controller {
                 }
             }
         }
-    }
-
-    /**
-     * This is a helper method used for helping format time in the time Label object.
-     */
-    public void formatTime() {
-
-        // used for unit conversion
-        final double siUnitDiff = 1000;
-        final int minInHour = 60;
-        final int secInMin = 60;
-        final int milliInSec = 1000;
-
-        long time = this.algorithm.getLastOperationTime();
-
-        // custom string added to time label object
-        String timeStr = "";
-
-        DecimalFormat threeDigitFormat = new DecimalFormat("###");
-        DecimalFormat multipleUnitFormat = new DecimalFormat("00");
-
-        // if statements to determine how to display time in what units
-        if (time < siUnitDiff) {
-
-            // nanoseconds
-            timeStr = threeDigitFormat.format(time) + " nanoseconds";
-        } else if (time / siUnitDiff < siUnitDiff) {
-
-            // microseconds
-            timeStr = TimeUnit.NANOSECONDS.toMicros(time) + "." +
-                    threeDigitFormat.format(time % siUnitDiff) + " microseconds";
-        } else if (time / (siUnitDiff * siUnitDiff) < siUnitDiff) {
-
-            // milliseconds
-            timeStr = TimeUnit.NANOSECONDS.toMillis(time) + "." +
-                    threeDigitFormat.format(TimeUnit.NANOSECONDS.toMicros((long)
-                            (time % (siUnitDiff * siUnitDiff)))) + " milliseconds";
-        } else if (time / (siUnitDiff * siUnitDiff * siUnitDiff) < siUnitDiff) {
-
-            // larger than nano, micro, and milli
-            timeStr = multipleUnitFormat.format(TimeUnit.NANOSECONDS.toMinutes(time)
-                    % minInHour) + ":" +
-                    multipleUnitFormat.format(TimeUnit.NANOSECONDS.toSeconds(time)
-                            % secInMin) + "." +
-                    multipleUnitFormat.format(TimeUnit.NANOSECONDS.toMillis(time) % milliInSec);
-
-        }
-
-        this.timeLabel.setText("Time elapsed: " + timeStr);
     }
 }

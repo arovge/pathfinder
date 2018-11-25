@@ -17,4 +17,5 @@ The user is able to select what path finding variables they would like to be ena
 
 ### Future Development
 ##### Features
-* The execution time is poor due to a flaw in how the program does the pathfinding. The state/pathfinding system should be redone before any future development is done.
+* Add in reset button for map
+* Additional algorithms
