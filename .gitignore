@@ -1,5 +1,5 @@
-# Any log files
-log.*
+# Log directory
+logs
 
 # IDE config file
 .idea
