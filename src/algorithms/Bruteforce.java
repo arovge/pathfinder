@@ -10,8 +10,9 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-import gui.MapRectangle;
-import java.util.ArrayList;
+import rectangle.MapRectangle;
+import rectangle.RectState;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -77,25 +78,25 @@ public class Bruteforce implements Algorithm {
         MapRectangle topRect = this.currentRectangle.top;
         if (topRect != null && topRect.canVisit()) {
             this.processQueue.add(topRect);
-            topRect.setState(MapRectangle.states.NOT_PROCESSED);
+            topRect.setState(RectState.NOT_PROCESSED);
         }
 
         MapRectangle leftRect = this.currentRectangle.left;
         if (leftRect != null && leftRect.canVisit()) {
             this.processQueue.add(leftRect);
-            leftRect.setState(MapRectangle.states.NOT_PROCESSED);
+            leftRect.setState(RectState.NOT_PROCESSED);
         }
 
         MapRectangle rightRect = this.currentRectangle.right;
         if (rightRect != null && rightRect.canVisit()) {
             this.processQueue.add(rightRect);
-            rightRect.setState(MapRectangle.states.NOT_PROCESSED);
+            rightRect.setState(RectState.NOT_PROCESSED);
         }
 
         MapRectangle bottomRect = this.currentRectangle.bottom;
         if (bottomRect != null && bottomRect.canVisit()) {
             this.processQueue.add(bottomRect);
-            bottomRect.setState(MapRectangle.states.NOT_PROCESSED);
+            bottomRect.setState(RectState.NOT_PROCESSED);
         }
 
         if (this.useDiagonalRectangles) {
@@ -103,25 +104,25 @@ public class Bruteforce implements Algorithm {
             MapRectangle topLeftRect = this.currentRectangle.topleft;
             if (topLeftRect != null && topLeftRect.canVisit()) {
                 this.processQueue.add(topLeftRect);
-                topLeftRect.setState(MapRectangle.states.NOT_PROCESSED);
+                topLeftRect.setState(RectState.NOT_PROCESSED);
             }
 
             MapRectangle topRightRect = this.currentRectangle.topright;
             if (topRightRect != null && topRightRect.canVisit()) {
                 this.processQueue.add(topRightRect);
-                topRightRect.setState(MapRectangle.states.NOT_PROCESSED);
+                topRightRect.setState(RectState.NOT_PROCESSED);
             }
 
             MapRectangle bottomLeftRect = this.currentRectangle.bottomleft;
             if (bottomLeftRect != null && bottomLeftRect.canVisit()) {
                 this.processQueue.add(bottomLeftRect);
-                bottomLeftRect.setState(MapRectangle.states.NOT_PROCESSED);
+                bottomLeftRect.setState(RectState.NOT_PROCESSED);
             }
 
             MapRectangle bottomRightRect = this.currentRectangle.bottomright;
             if (bottomRightRect != null && bottomRightRect.canVisit()) {
                 this.processQueue.add(bottomRightRect);
-                bottomRightRect.setState(MapRectangle.states.NOT_PROCESSED);
+                bottomRightRect.setState(RectState.NOT_PROCESSED);
             }
         }
 
@@ -130,13 +131,13 @@ public class Bruteforce implements Algorithm {
 
 
         // 4. If current vertex == destination, we're done! EXIT
-        if (newRect.getState() == MapRectangle.states.END) {
+        if (newRect.getState() == RectState.END) {
             System.out.println("done!");
 
             // stop animation!
             this.timeline.stop();
         } else {
-            newRect.setState(MapRectangle.states.PROCESSED);
+            newRect.setState(RectState.PROCESSED);
             this.currentRectangle = newRect;
         }
     }

@@ -6,7 +6,7 @@
 
 package algorithms;
 
-import gui.MapRectangle;
+import rectangle.MapRectangle;
 
 /**
  * This is an interface for an algorithms object.

@@ -1,3 +1,8 @@
+# Any log files
 log.*
+
+# IDE config file
 .idea
-out
+
+# Output directory
+output
