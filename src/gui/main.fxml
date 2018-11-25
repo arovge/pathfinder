@@ -63,7 +63,7 @@
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="199.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="modeLabel" text="Creation Mode">
+            <Label fx:id="modeLabel" text="Editing">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin></Label>

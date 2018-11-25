@@ -15,7 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import node.Node;
-import node.State;
+import node.PrimaryState;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +45,7 @@ public class Controller {
     @FXML
     private Pane pane;
 
-    /** This stores information about the rectangles the algorithms starts and ends at. */
+    /** This stores information about the nodes the algorithms starts and ends at. */
     private Node startNode;
     private Node endNode;
 
@@ -57,7 +57,7 @@ public class Controller {
 
     /**
      * This method runs when the JavaFX window is initialized.
-     * It adds all of the rectangles to the pane with event handlers.
+     * It adds all of the nodes to the pane with event handlers.
      */
     @FXML
     public void initialize() {
@@ -71,8 +71,8 @@ public class Controller {
      * This method runs the current algorithms against the map.
      */
     public void run() {
-        this.algorithm.runPath(this.startNode, this.endNode, this.useDiagonalNodes);
-        this.formatTime(this.algorithm.getLastOperationTime());
+        this.modeLabel.setText("Running");
+        this.algorithm.runPath(this.startNode, this.useDiagonalNodes);
     }
 
     /**
@@ -111,29 +111,29 @@ public class Controller {
                 Node mapRect = this.nodes[paneX][paneY];
 
                 if (e.getButton() == MouseButton.PRIMARY) {
-                    mapRect.setState(State.WALL);
+                    mapRect.setState(PrimaryState.WALL);
                 } else if (e.getButton() == MouseButton.SECONDARY) {
-                    mapRect.setState(State.NORMAL);
+                    mapRect.setState(PrimaryState.NORMAL);
                 }
             }
         });
     }
 
     /**
-     * This method creates all of the MapRectangles and adds them to the pane.
+     * This method creates all of the nodes and adds them to the pane.
      */
     private void generateNodes() {
         // generate all rectangles and add them to the pane
         for (int i = 0; i < this.x; i++) {
             for (int j = 0; j < this.y; j++) {
 
-                Node mapRect = new Node(i * Node.WIDTH, j * Node.HEIGHT,
+                Node mapNode = new Node(i * Node.WIDTH, j * Node.HEIGHT,
                         Node.WIDTH, Node.HEIGHT);
 
-                this.addRectangleEventFilters(mapRect);
+                this.addNodeEventFilters(mapNode);
 
-                this.pane.getChildren().add(mapRect);
-                this.nodes[i][j] = mapRect;
+                this.pane.getChildren().add(mapNode);
+                this.nodes[i][j] = mapNode;
             }
         }
     }
@@ -143,26 +143,26 @@ public class Controller {
      * passed into the method.
      * @param node Node object to add event filters to
      */
-    private void addRectangleEventFilters(Node node) {
+    private void addNodeEventFilters(Node node) {
         // this changes the color when hovered over
         node.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-            if (node.getState() == State.NORMAL) {
+            if (node.getPrimaryState() == PrimaryState.NORMAL) {
                 if (e.isShiftDown()) {
-                    node.setState(State.HOVER_START);
+                    node.setState(PrimaryState.HOVER_START);
                 } else if (e.isControlDown()) {
-                    node.setState(State.HOVER_END);
+                    node.setState(PrimaryState.HOVER_END);
                 } else {
-                    node.setState(State.HOVER_WALL);
+                    node.setState(PrimaryState.HOVER_WALL);
                 }
             }
         });
 
         // this changes the color when not hovered over
         node.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-            if (node.getState() == State.HOVER_WALL ||
-                node.getState() == State.HOVER_START ||
-                node.getState() == State.HOVER_END) {
-                node.setState(State.NORMAL);
+            if (node.getPrimaryState() == PrimaryState.HOVER_WALL ||
+                node.getPrimaryState() == PrimaryState.HOVER_START ||
+                node.getPrimaryState() == PrimaryState.HOVER_END) {
+                node.setState(PrimaryState.NORMAL);
             }
         });
 
@@ -172,9 +172,9 @@ public class Controller {
 
                 if (e.isShiftDown()) {
                     if (this.startNode != null) {
-                        this.startNode.setState(State.NORMAL);
+                        this.startNode.setState(PrimaryState.NORMAL);
                     }
-                    node.setState(State.START);
+                    node.setState(PrimaryState.START);
                     this.startNode = node;
 
                     if (this.endNode != null) {
@@ -183,72 +183,72 @@ public class Controller {
 
                 } else if (e.isControlDown()) {
                     if (this.endNode != null) {
-                        this.endNode.setState(State.NORMAL);
+                        this.endNode.setState(PrimaryState.NORMAL);
                     }
-                    node.setState(State.END);
+                    node.setState(PrimaryState.END);
                     this.endNode = node;
 
                     if (this.startNode != null) {
                         this.runMenuItem.setDisable(false);
                     }
                 } else {
-                    node.setState(State.WALL);
+                    node.setState(PrimaryState.WALL);
                 }
             } else if (e.getButton() == MouseButton.SECONDARY) {
-                node.setState(State.NORMAL);
+                node.setState(PrimaryState.NORMAL);
             }
         });
     }
 
     /**
-     * This method connects all the rectangles to each other.
+     * This method connects all the nodes to each other.
      * It loops through the 2D array and references each node to
      * each other depending on boundary conditions.
      */
     private void ConnectNodes() {
-        // loop through all rectangles in the 2D array
+        // loop through all nodes in the 2D array
         for (int j = 0; j < this.y; j++) {
             for (int i = 0; i < this.x; i++) {
-                Node mapRect = this.nodes[i][j];
+                Node mapNode = this.nodes[i][j];
 
                 // top
                 if (0 < j) {
-                    mapRect.top = this.nodes[i][j - 1];
+                    mapNode.top = this.nodes[i][j - 1];
                 }
 
                 // left
                 if (0 < i) {
-                    mapRect.left = this.nodes[i - 1][j];
+                    mapNode.left = this.nodes[i - 1][j];
                 }
 
                 // right
                 if (i < this.x - 1) {
-                    mapRect.right = this.nodes[i + 1][j];
+                    mapNode.right = this.nodes[i + 1][j];
                 }
 
                 // bottom
                 if (j < this.y - 1) {
-                    mapRect.bottom = this.nodes[i][j + 1];
+                    mapNode.bottom = this.nodes[i][j + 1];
                 }
 
                 // top left
                 if (0 < j && 0 < i) {
-                    mapRect.topleft  = this.nodes[i - 1][j - 1];
+                    mapNode.topleft  = this.nodes[i - 1][j - 1];
                 }
 
                 // top right
                 if (0 < j && i < this.x - 1) {
-                    mapRect.topright  = this.nodes[i + 1][j - 1];
+                    mapNode.topright  = this.nodes[i + 1][j - 1];
                 }
 
                 // bottom left
                 if (j < this.y - 1 && 0 < i) {
-                    mapRect.bottomleft  = this.nodes[i - 1][j + 1];
+                    mapNode.bottomleft  = this.nodes[i - 1][j + 1];
                 }
 
                 // bottom right
                 if (j < this.y - 1 && i < this.x - 1) {
-                    mapRect.bottomright  = this.nodes[i + 1][j + 1];
+                    mapNode.bottomright  = this.nodes[i + 1][j + 1];
                 }
             }
         }
@@ -256,15 +256,16 @@ public class Controller {
 
     /**
      * This is a helper method used for helping format time in the time Label object.
-     * @param time the time to be formatted in nanoseconds
      */
-    private void formatTime(long time) {
+    public void formatTime() {
 
         // used for unit conversion
         final double siUnitDiff = 1000;
         final int minInHour = 60;
         final int secInMin = 60;
         final int milliInSec = 1000;
+
+        long time = this.algorithm.getLastOperationTime();
 
         // custom string added to time label object
         String timeStr = "";

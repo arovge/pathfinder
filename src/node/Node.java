@@ -15,21 +15,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class Node extends Rectangle {
 
-    /**
-     * This is an enum that contains different neighbors the node could have.
-     */
-    public enum neighbors {
-        TOP,
-        LEFT,
-        RIGHT,
-        BOTTOM,
-        TOPLEFT,
-        TOPRIGHT,
-        BOTTOMLEFT,
-        BOTTOMRIGHT
-    }
-
-    private State state;
+    private PrimaryState primaryState;
+    private SecondaryState secondaryState;
 
     public Node top;
     public Node right;
@@ -63,7 +50,7 @@ public class Node extends Rectangle {
      */
     public Node(double x, double y, double width, double height) {
         super(x, y, width, height);
-        this.setState(State.NORMAL);
+        this.setState(PrimaryState.NORMAL);
 
         this.isVisited = false;
     }
@@ -77,15 +64,23 @@ public class Node extends Rectangle {
     }
 
     public boolean canVisit() {
-        return this.state != State.WALL && !this.isVisited;
+        return this.primaryState != PrimaryState.WALL && this.secondaryState != SecondaryState.PROCESSED && !this.isVisited;
     }
 
     /**
-     * This method returns the state of the node.
+     * This method returns the primary state of the node.
      * @return Node states enum value
      */
-    public State getState() {
-        return this.state;
+    public PrimaryState getPrimaryState() {
+        return this.primaryState;
+    }
+
+    /**
+     * This method returns the secondary state of the node.
+     * @return Node states enum value
+     */
+    public SecondaryState getSecondaryState() {
+        return this.secondaryState;
     }
 
     /**
@@ -93,9 +88,16 @@ public class Node extends Rectangle {
      * It takes in an enum and changes the state and sets the color based on the state
      * @param destinationState MapRectangles states enum value
      */
-    public void setState(State destinationState) {
-        if (this.state != destinationState) {
-            this.state = destinationState;
+    public void setState(PrimaryState destinationState) {
+        if (this.primaryState != destinationState) {
+            this.primaryState = destinationState;
+            this.setColor();
+        }
+    }
+
+    public void setSecondaryState(SecondaryState destinationState) {
+        if (this.secondaryState != destinationState) {
+            this.secondaryState = destinationState;
             this.setColor();
         }
     }
@@ -105,35 +107,42 @@ public class Node extends Rectangle {
      * The method is called from within the class and is dependent on the currently set state.
      */
     private void setColor() {
-        switch(this.state) {
-            case NOT_PROCESSED:
-                this.setFill(Node.NOT_PROCESSED_COLOR);
-                break;
-            case PROCESSED:
-                this.setFill(Node.PROCESSED_COLOR);
-                break;
-            case NORMAL:
-                this.setFill(Node.NORMAL_COLOR);
-                this.setStroke(Node.NORMAL_COLOR);
-                break;
-            case WALL:
-                this.setFill(Node.WALL_COLOR);
-                break;
-            case HOVER_WALL:
-                this.setStroke(Node.WALL_COLOR);
-                break;
-            case START:
-                this.setFill(Node.START_COLOR);
-                break;
-            case HOVER_START:
-                this.setStroke(Node.START_COLOR);
-                break;
-            case END:
-                this.setFill(Node.END_COLOR);
-                break;
-            case HOVER_END:
-                this.setStroke(Node.END_COLOR);
-                break;
+        if (this.secondaryState != null) {
+            switch(this.secondaryState) {
+                case NOT_PROCESSED:
+                    if (this.primaryState != PrimaryState.END) {
+                        this.setFill(Node.NOT_PROCESSED_COLOR);
+                    }
+                    break;
+                case PROCESSED:
+                    this.setFill(Node.PROCESSED_COLOR);
+                    break;
+            }
+        } else {
+            switch(this.primaryState) {
+                case NORMAL:
+                    this.setFill(Node.NORMAL_COLOR);
+                    this.setStroke(Node.NORMAL_COLOR);
+                    break;
+                case WALL:
+                    this.setFill(Node.WALL_COLOR);
+                    break;
+                case HOVER_WALL:
+                    this.setStroke(Node.WALL_COLOR);
+                    break;
+                case START:
+                    this.setFill(Node.START_COLOR);
+                    break;
+                case HOVER_START:
+                    this.setStroke(Node.START_COLOR);
+                    break;
+                case END:
+                    this.setFill(Node.END_COLOR);
+                    break;
+                case HOVER_END:
+                    this.setStroke(Node.END_COLOR);
+                    break;
+            }
         }
     }
 }

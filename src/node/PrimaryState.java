@@ -7,11 +7,9 @@
 package node;
 
 /**
- * This is an enum that contains all of the possible states for the Node.
+ * This is an enum that contains all of the possible primary states for the Node.
  */
-public enum State {
-    NOT_PROCESSED,
-    PROCESSED,
+public enum PrimaryState {
     NORMAL,
     HOVER_WALL,
     WALL,
