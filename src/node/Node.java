@@ -15,10 +15,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class Node extends Rectangle {
 
-    private PrimaryState primaryState;
-    private SecondaryState secondaryState;
-
-
+    private Types.PrimaryState primaryState;
+    private Types.SecondaryState secondaryState;
 
     public Node top;
     public Node right;
@@ -52,7 +50,7 @@ public class Node extends Rectangle {
      */
     public Node(double x, double y, double width, double height) {
         super(x, y, width, height);
-        this.setState(PrimaryState.NORMAL);
+        this.setState(Types.PrimaryState.NORMAL);
 
         this.isVisited = false;
     }
@@ -66,14 +64,14 @@ public class Node extends Rectangle {
     }
 
     public boolean canVisit() {
-        return this.primaryState != PrimaryState.WALL && this.secondaryState != SecondaryState.PROCESSED && !this.isVisited;
+        return this.primaryState != Types.PrimaryState.WALL && this.secondaryState != Types.SecondaryState.PROCESSED && !this.isVisited;
     }
 
     /**
      * This method returns the primary state of the node.
      * @return Node states enum value
      */
-    public PrimaryState getPrimaryState() {
+    public Types.PrimaryState getPrimaryState() {
         return this.primaryState;
     }
 
@@ -81,7 +79,7 @@ public class Node extends Rectangle {
      * This method returns the secondary state of the node.
      * @return Node states enum value
      */
-    public SecondaryState getSecondaryState() {
+    public Types.SecondaryState getSecondaryState() {
         return this.secondaryState;
     }
 
@@ -90,14 +88,14 @@ public class Node extends Rectangle {
      * It takes in an enum and changes the state and sets the color based on the state
      * @param destinationState MapRectangles states enum value
      */
-    public void setState(PrimaryState destinationState) {
+    public void setState(Types.PrimaryState destinationState) {
         if (this.primaryState != destinationState) {
             this.primaryState = destinationState;
             this.setColor();
         }
     }
 
-    public void setSecondaryState(SecondaryState destinationState) {
+    public void setSecondaryState(Types.SecondaryState destinationState) {
         if (this.secondaryState != destinationState) {
             this.secondaryState = destinationState;
             this.setColor();
@@ -112,7 +110,7 @@ public class Node extends Rectangle {
         if (this.secondaryState != null) {
             switch(this.secondaryState) {
                 case NOT_PROCESSED:
-                    if (this.primaryState != PrimaryState.END) {
+                    if (this.primaryState != Types.PrimaryState.END) {
                         this.setFill(Node.NOT_PROCESSED_COLOR);
                     }
                     break;

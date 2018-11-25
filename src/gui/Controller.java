@@ -15,9 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import node.Node;
-import node.PrimaryState;
-import java.text.DecimalFormat;
-import java.util.concurrent.TimeUnit;
+import node.Types.PrimaryState;
 
 /**
  * This is the controller for the Main JavaFX file.

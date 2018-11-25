@@ -12,8 +12,8 @@ import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import node.Node;
-import node.PrimaryState;
-import node.SecondaryState;
+import node.Types.PrimaryState;
+import node.Types.SecondaryState;
 import java.util.LinkedList;
 import java.util.Queue;
 
