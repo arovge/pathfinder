@@ -1,8 +1,8 @@
-# Log directory
+# log directory
 logs
 
-# IDE config file
-.idea
+# .idea config files
+**/.idea/workspace.xml **/.idea/tasks.xml
 
-# Output directory
-output
+# project output directory
+out
